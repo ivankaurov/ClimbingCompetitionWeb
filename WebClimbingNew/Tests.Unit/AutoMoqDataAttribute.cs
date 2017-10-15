@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Database.Services;
+using Database;
 
 namespace Tests.Unit
 {
@@ -13,6 +15,7 @@ namespace Tests.Unit
     {
         public AutoMoqDataAttribute() : base(new Fixture().Customize(new AutoMoqCustomization()))
         {
+            this.Fixture.Register<IIdentityProvider<Guid>>(() => IdentityProvider.Instance);
         }
     }
 }

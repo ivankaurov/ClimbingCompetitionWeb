@@ -23,6 +23,12 @@ namespace Database
                 .HasForeignKey(p => p.LtrObjectId)
                 .IsRequired();
 
+            modelBuilder.Entity<Ltr<T>>()
+                .HasMany(l => l.Objects)
+                .WithOne(o => o.Ltr)
+                .HasForeignKey(o => o.LtrId)
+                .IsRequired();
+
             base.OnModelCreating(modelBuilder);
         }
     }
