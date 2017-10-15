@@ -11,7 +11,7 @@ namespace Utilities
     public static class ObjectSerializer
     {
         private static readonly ConcurrentDictionary<Type, Func<object, IDictionary<string, ObjectPropertyValue>>> CompiledPropertyExtractors = new ConcurrentDictionary<Type, Func<object, IDictionary<string, ObjectPropertyValue>>>();
-        ////private static readonly ConstructorInfo DictionaryCtor = typeof(Dictionary<string, ObjectPropertyValue>).GetConstructor(new[] { typeof(IComparer<string>) });
+        private static readonly ConstructorInfo DictionaryCtor = typeof(Dictionary<string, ObjectPropertyValue>).GetConstructor(new[] { typeof(IComparer<string>) });
 
         public static IDictionary<string,ObjectPropertyValue> ExtractProperties(object obj)
         {
@@ -24,9 +24,11 @@ namespace Utilities
         private static Func<object, IDictionary<string, ObjectPropertyValue>> CompileObjectPropertyExtractor(Type objectType)
         {
             var memebersToExtract = objectType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty)
-                .Select(p => new { Name = p.Name, Type = p.PropertyType })
+                .Where(ShouldSerializeMember)
+                .Select(p => new { Name = p.Name, Type = p.PropertyType, MemberType = MemberType.Property })
                 .Concat(objectType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .Select(f => new { Name = f.Name, Type = f.FieldType }))
+                .Where(ShouldSerializeMember)
+                .Select(f => new { Name = f.Name, Type = f.FieldType, MemberType = MemberType.Field }))
                 .ToList();
 
             if (memebersToExtract.Count == 0)
@@ -38,10 +40,11 @@ namespace Utilities
             var result = Expression.Variable(typeof(IDictionary<string, ObjectPropertyValue>));
             var block = new List<Expression>(memebersToExtract.Count + 10)
             {
-                Expression.Assign(result, CallFunc(() => new Dictionary<string, ObjectPropertyValue>(StringComparer.Ordinal))),
+                ////Expression.Assign(result, Expression.New(DictionaryCtor, Expression.Constant(StringComparer.Ordinal))),
+                Expression.Assign(result, ToCallExpression(() => new Dictionary<string, ObjectPropertyValue>(StringComparer.Ordinal))),
             };
 
-            var objectPropertyInfoCtor = typeof(ObjectPropertyValue).GetConstructor(new[] { typeof(Type), typeof(object) });
+            var objectPropertyInfoCtor = typeof(ObjectPropertyValue).GetConstructor(new[] { typeof(Type), typeof(object), typeof(MemberType) });
             foreach (var p in memebersToExtract)
             {
                 var memberExtractExpression = Expression.PropertyOrField(Expression.TypeAs(parameter, objectType), p.Name);
@@ -49,7 +52,7 @@ namespace Utilities
                 var itemExpression = Expression.Variable(typeof(ObjectPropertyValue));
 
                 var addblock = Expression.Block(new[] { itemExpression },
-                    Expression.Assign(itemExpression, Expression.New(objectPropertyInfoCtor, Expression.Constant(p.Type), Expression.TypeAs(memberExtractExpression, typeof(object)))),
+                    Expression.Assign(itemExpression, Expression.New(objectPropertyInfoCtor, Expression.Constant(p.Type), Expression.TypeAs(memberExtractExpression, typeof(object)), Expression.Constant(p.MemberType))),
                     Expression.Call(result, nameof(IDictionary<string, ObjectPropertyValue>.Add), null, Expression.Constant(p.Name), itemExpression));
 
                 block.Add(addblock);
@@ -59,15 +62,34 @@ namespace Utilities
             return Expression.Lambda<Func<object, IDictionary<string, ObjectPropertyValue>>>(Expression.Block(new[] { result }, block), parameter).Compile();
         }
 
+        private static bool ShouldSerializeMember(MemberInfo memberInfo)
+        {
+            if(memberInfo.Name.Contains("<"))
+            {
+                return false;
+            }
+
+            if(Attribute.IsDefined(memberInfo, typeof(SerializeSkipAttribute)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private static Expression GetPropertyExpression<TSource>(Expression obj, Expression<Func<TSource, object>> propertyFunc)
         {
             return Expression.Property(obj, (PropertyInfo)((MemberExpression)propertyFunc.Body).Member);
         }
 
-        private static Expression CallFunc<T>(Func<T> func)
+        private static InvocationExpression ToCallExpression<T>(Func<T> func)
         {
-            Expression<Func<T>> result = () => func();
-            return Expression.Invoke(result);
+            return Expression.Invoke(ToExpression(func));
+        }
+
+        private static Expression<Func<T>> ToExpression<T>(Func<T> func)
+        {
+            return () => func();
         }
     }
 }
