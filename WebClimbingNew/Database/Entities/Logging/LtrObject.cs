@@ -5,13 +5,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Utilities;
+using System.Linq;
 
 namespace Database.Entities.Logging
 {
     [Table("ltr_object")]
     public class LtrObject<T> : BaseEntity<T>
     {
-        public LtrObject(IIdentityObject<T> obj, IIdentityProvider<T> identityProvider) : base(identityProvider)
+        internal LtrObject(IIdentityObject<T> obj, IIdentityProvider<T> identityProvider) : base(identityProvider)
         {
             Guard.NotNull(obj, nameof(obj));
             this.ObjectId = obj.Id;
@@ -43,6 +44,58 @@ namespace Database.Entities.Logging
 
         public virtual Ltr<T> Ltr { get; set; }
 
+        public LtrObjectProperties<T> this[string propertyName]
+        {
+            get
+            {
+                Guard.NotNullOrWhitespace(propertyName, nameof(propertyName));
+                return this.Properties.FirstOrDefault(p => p.PropertyName.Equals(propertyName, StringComparison.Ordinal));
+            }
+        }
+
         protected string ChangeTypeString { get; set; }
+
+        public void SetNewValues(object obj, IIdentityProvider<T> identityProvider)
+        {
+            Guard.NotNull(obj, nameof(obj));
+            Guard.NotNull(identityProvider, nameof(identityProvider));
+            this.SetValues(obj, identityProvider, (p, v) => p.NewValue = v);
+        }
+
+        public void SetOldValues(object obj, IIdentityProvider<T> identityProvider)
+        {
+            Guard.NotNull(obj, nameof(obj));
+            Guard.NotNull(identityProvider, nameof(identityProvider));
+            this.SetValues(obj, identityProvider, (p, v) => p.OldValue = v);
+        }
+
+        private void SetValues(object obj, IIdentityProvider<T> identityProvider, Action<LtrObjectProperties<T>, string> updateAction)
+        {
+            var values = ObjectSerializer.ExtractProperties(obj);
+            foreach(var v in values)
+            {
+                var item = this.GetOrAddObjectProperty(v.Key, v.Value.Type, identityProvider);
+                updateAction(item, v.Value.Value?.ToString());
+            }
+        }
+
+        private LtrObjectProperties<T> GetOrAddObjectProperty(string propertyName, Type propertyType, IIdentityProvider<T> identityProvider)
+        {
+            var existingItem = this.Properties.FirstOrDefault(p => p.PropertyName.Equals(propertyName, StringComparison.Ordinal) && p.PropertyType.Equals(propertyType.FullName, StringComparison.Ordinal));
+            if(existingItem == null)
+            {
+                existingItem = new LtrObjectProperties<T>(identityProvider)
+                {
+                    PropertyName = propertyName,
+                    PropertyType = propertyType.FullName,
+                    LtrObject = this,
+                    LtrObjectId = this.Id,
+                };
+
+                this.Properties.Add(existingItem);
+            }
+
+            return existingItem;
+        } 
     }
 }
