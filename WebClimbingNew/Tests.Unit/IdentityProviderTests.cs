@@ -19,10 +19,7 @@ namespace Tests.Unit
             sut.CreateNewIdentity();
 
             // Act
-            for (int i = 0; i < idCount; i++)
-            {
-                results.Add(sut.CreateNewIdentity());
-            }
+            Parallel.For(0, idCount, n => Assert.True(results.Add(sut.CreateNewIdentity())));
 
             // Assert
             Assert.Equal(idCount, results.Count);
