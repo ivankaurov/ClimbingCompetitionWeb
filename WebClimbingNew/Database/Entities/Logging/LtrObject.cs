@@ -35,7 +35,7 @@ namespace Database.Entities.Logging
         public ChangeType ChangeType
         {
             get => Enum.TryParse(this.ChangeTypeString, true, out ChangeType result) ? result : default(ChangeType);
-            set => this.ChangeTypeString = value.ToString();
+            internal set => this.ChangeTypeString = value.ToString();
         }
 
         public virtual ICollection<LtrObjectProperties<T>> Properties { get; set; }
@@ -55,14 +55,14 @@ namespace Database.Entities.Logging
 
         protected string ChangeTypeString { get; set; }
 
-        public void SetNewValues(object obj, IIdentityProvider<T> identityProvider)
+        internal void SetNewValues(object obj, IIdentityProvider<T> identityProvider)
         {
             Guard.NotNull(obj, nameof(obj));
             Guard.NotNull(identityProvider, nameof(identityProvider));
             this.SetValues(obj, identityProvider, (p, v) => p.NewValue = v);
         }
 
-        public void SetOldValues(object obj, IIdentityProvider<T> identityProvider)
+        internal void SetOldValues(object obj, IIdentityProvider<T> identityProvider)
         {
             Guard.NotNull(obj, nameof(obj));
             Guard.NotNull(identityProvider, nameof(identityProvider));

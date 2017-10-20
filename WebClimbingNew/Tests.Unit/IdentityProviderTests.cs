@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Database;
 using Xunit;
@@ -15,9 +16,13 @@ namespace Tests.Unit
             // Arrange
             var sut = IdentityProvider.Instance;
             var results = new HashSet<Guid>(idCount);
+            sut.CreateNewIdentity();
 
             // Act
-            Parallel.For(0, idCount, n => results.Add(sut.CreateNewIdentity()));
+            for (int i = 0; i < idCount; i++)
+            {
+                results.Add(sut.CreateNewIdentity());
+            }
 
             // Assert
             Assert.Equal(idCount, results.Count);
