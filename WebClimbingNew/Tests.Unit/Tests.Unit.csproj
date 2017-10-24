@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoFixture" Version="3.51.0" />
-    <PackageReference Include="AutoFixture.AutoMoq" Version="3.51.0" />
-    <PackageReference Include="AutoFixture.Xunit2" Version="3.51.0" />
+    <PackageReference Include="AutoFixture" Version="4.0.0-rc1" />
+    <PackageReference Include="AutoFixture.AutoMoq" Version="4.0.0-rc1" />
+    <PackageReference Include="AutoFixture.Xunit2" Version="4.0.0-rc1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0-preview-20171012-09" />
     <PackageReference Include="Moq" Version="4.7.142" />
     <PackageReference Include="xunit" Version="2.3.0" />

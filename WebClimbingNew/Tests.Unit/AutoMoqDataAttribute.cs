@@ -1,6 +1,6 @@
-﻿using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoMoq;
-using Ploeh.AutoFixture.Xunit2;
+﻿using AutoFixture;
+using AutoFixture.AutoMoq;
+using AutoFixture.Xunit2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +13,16 @@ namespace Tests.Unit
 {
     internal sealed class AutoMoqDataAttribute : AutoDataAttribute
     {
-        public AutoMoqDataAttribute() : base(new Fixture().Customize(new AutoMoqCustomization()))
+        public AutoMoqDataAttribute() : base(CreateFixture)
         {
-            this.Fixture.Register<IIdentityProvider>(() => IdentityProvider.Instance);
+        }
+
+        private static Fixture CreateFixture()
+        {
+            var fixture = new Fixture();
+            fixture.Customize(new AutoMoqCustomization());
+            fixture.Register<IIdentityProvider>(() => IdentityProvider.Instance);
+            return fixture;
         }
     }
 }
