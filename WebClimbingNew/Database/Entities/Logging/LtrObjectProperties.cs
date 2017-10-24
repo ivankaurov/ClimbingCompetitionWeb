@@ -8,10 +8,9 @@ using Utilities;
 
 namespace Database.Entities.Logging
 {
-    [Table("ltr_object_properties")]
-    public class LtrObjectProperties<T> : BaseEntity<T>
+    public class LtrObjectProperties : BaseEntity
     {
-        internal LtrObjectProperties(IIdentityProvider<T> identityProvider) : base(identityProvider)
+        internal LtrObjectProperties(IIdentityProvider identityProvider) : base(identityProvider)
         {
         }
 
@@ -19,15 +18,11 @@ namespace Database.Entities.Logging
         {
         }
 
-        public T LtrObjectId { get; set; }
-        public virtual LtrObject<T> LtrObject { get; set; }
-
-        [Required]
-        [MaxLength(512)]
+        public Guid LtrObjectId { get; set; }
+        public virtual LtrObject LtrObject { get; set; }
+        
         public string PropertyName { get; set; }
-
-        [Required]
-        [MaxLength(2048)]
+        
         public string PropertyType { get; set; }
 
         public string OldValue { get; set; }

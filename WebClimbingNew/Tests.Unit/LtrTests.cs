@@ -10,10 +10,10 @@ namespace Tests.Unit
     {
         [Theory]
         [AutoMoqData]
-        public void ShouldAddNewObject(IIdentityProvider<Guid> identityProvider, TestIdentityObject<Guid> obj)
+        public void ShouldAddNewObject(IIdentityProvider identityProvider, TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr<Guid>(identityProvider);
+            var sut = new Ltr(identityProvider);
 
             // Act
             sut.AddNewObject(obj, identityProvider);
@@ -28,10 +28,10 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldThrowOnDuplicateAddNewObject(IIdentityProvider<Guid> identityProvider, TestIdentityObject<Guid> obj)
+        public void ShouldThrowOnDuplicateAddNewObject(IIdentityProvider identityProvider, TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr<Guid>(identityProvider);
+            var sut = new Ltr(identityProvider);
 
             // Act
             sut.AddNewObject(obj, identityProvider);
@@ -42,10 +42,10 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldAddDeletedObject(IIdentityProvider<Guid> identityProvider, TestIdentityObject<Guid> obj)
+        public void ShouldAddDeletedObject(IIdentityProvider identityProvider, TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr<Guid>(identityProvider);
+            var sut = new Ltr(identityProvider);
 
             // Act
             sut.AddDeletedObject(obj, identityProvider);
@@ -60,10 +60,10 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldThrowOnDuplicateAddDeletedObject(IIdentityProvider<Guid> identityProvider, TestIdentityObject<Guid> obj)
+        public void ShouldThrowOnDuplicateAddDeletedObject(IIdentityProvider identityProvider, TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr<Guid>(identityProvider);
+            var sut = new Ltr (identityProvider);
 
             // Act
             sut.AddDeletedObject(obj, identityProvider);
@@ -74,10 +74,10 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldAddChangedObject(IIdentityProvider<Guid> identityProvider, TestIdentityObject<Guid> obj, string newValue)
+        public void ShouldAddChangedObject(IIdentityProvider identityProvider, TestIdentityObject obj, string newValue)
         {
             // Arrange
-            var sut = new Ltr<Guid>(identityProvider);
+            var sut = new Ltr (identityProvider);
             var oldValue = obj.StringProperty;
 
             // Act
@@ -94,10 +94,10 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldThrowOnNoOldValues(IIdentityProvider<Guid> identityProvider, TestIdentityObject<Guid> obj)
+        public void ShouldThrowOnNoOldValues(IIdentityProvider identityProvider, TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr<Guid>(identityProvider);
+            var sut = new Ltr(identityProvider);
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => sut.AddObjectAfterChange(obj, identityProvider));
@@ -105,10 +105,10 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldThrowOnDuplicateAddOldValuesObject(IIdentityProvider<Guid> identityProvider, TestIdentityObject<Guid> obj)
+        public void ShouldThrowOnDuplicateAddOldValuesObject(IIdentityProvider identityProvider, TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr<Guid>(identityProvider);
+            var sut = new Ltr(identityProvider);
 
             // Act
             sut.AddDeletedObject(obj, identityProvider);

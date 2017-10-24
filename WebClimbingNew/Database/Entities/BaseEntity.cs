@@ -8,13 +8,11 @@ using Utilities;
 
 namespace Database.Entities
 {
-    [Table("entities")]
-    public abstract class BaseEntity<T> : IIdentityObject<T>
+    public abstract class BaseEntity : IIdentityObject
     {
-        protected BaseEntity(IIdentityProvider<T> identityProvider)
+        protected BaseEntity(IIdentityProvider identityProvider)
         {
             this.Id = identityProvider.CreateNewIdentity();
-            this.ObjectClass = this.GetType().FullName;
             this.WhenCreated = this.WhenChanged = DateTimeOffset.Now;
         }
 
@@ -22,14 +20,8 @@ namespace Database.Entities
         {
         }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [SerializeSkip]
-        public T Id { get; private set; }
-
-        [MaxLength(2048)]
-        [SerializeSkip]
-        public string ObjectClass { get; private set; }
+        public Guid Id { get; private set; }
 
         public DateTimeOffset WhenCreated { get; private set; }
         public DateTimeOffset WhenChanged { get; private set; }

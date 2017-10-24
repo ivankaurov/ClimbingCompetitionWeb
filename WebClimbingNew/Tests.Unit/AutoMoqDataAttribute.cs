@@ -15,7 +15,7 @@ namespace Tests.Unit
     {
         public AutoMoqDataAttribute() : base(new Fixture().Customize(new AutoMoqCustomization()))
         {
-            this.Fixture.Register<IIdentityProvider<Guid>>(() => IdentityProvider.Instance);
+            this.Fixture.Register<IIdentityProvider>(() => IdentityProvider.Instance);
         }
     }
 }

@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Database.Services
 {
-    public interface IIdentityProvider<T>
+    public interface IIdentityProvider
     {
-        T CreateNewIdentity();
+        Guid CreateNewIdentity();
     }
 }

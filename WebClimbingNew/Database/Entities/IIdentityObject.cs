@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Database.Entities
 {
-    public interface IIdentityObject<T>
+    public interface IIdentityObject
     {
-        T Id { get; } 
+        Guid Id { get; } 
     }
 }

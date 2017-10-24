@@ -3,7 +3,7 @@ using Utilities;
 
 namespace Tests.Unit.Utilities
 {
-    public class TestIdentityObject<T> : BaseEntity<T>
+    public class TestIdentityObject : BaseEntity
     {
         public TestIdentityObject()
         {

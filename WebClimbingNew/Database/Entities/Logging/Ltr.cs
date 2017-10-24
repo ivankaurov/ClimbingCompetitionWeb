@@ -7,22 +7,21 @@ using Utilities;
 
 namespace Database.Entities.Logging
 {
-    [Table("ltr")]
-    public class Ltr<T> : BaseEntity<T>
+    public class Ltr : BaseEntity
     {
-        public Ltr(IIdentityProvider<T> identityProvider)
+        public Ltr(IIdentityProvider identityProvider)
         : base(identityProvider)
         {
-            this.Objects = new List<LtrObject<T>>();
+            this.Objects = new List<LtrObject>();
         }
 
         protected Ltr()
         {
         }
 
-        public virtual ICollection<LtrObject<T>> Objects { get; set; }
+        public virtual ICollection<LtrObject> Objects { get; set; }
 
-        public void AddNewObject(IIdentityObject<T> obj, IIdentityProvider<T> identityProvider)
+        public void AddNewObject(IIdentityObject obj, IIdentityProvider identityProvider)
         {
             Guard.NotNull(obj, nameof(obj));
             Guard.NotNull(identityProvider, nameof(identityProvider));
@@ -33,7 +32,7 @@ namespace Database.Entities.Logging
                 throw new ArgumentException($"Object Id={obj.Id} already added. ChangeType={ltrObject.ChangeType}", nameof(obj));
             }
 
-            ltrObject = new LtrObject<T>(obj, identityProvider)
+            ltrObject = new LtrObject(obj, identityProvider)
             {
                 ChangeType = ChangeType.New,
             };
@@ -42,7 +41,7 @@ namespace Database.Entities.Logging
             this.Objects.Add(ltrObject);
         }
 
-        public void AddObjectBeforeChange(IIdentityObject<T> obj, IIdentityProvider<T> identityProvider)
+        public void AddObjectBeforeChange(IIdentityObject obj, IIdentityProvider identityProvider)
         {
             Guard.NotNull(obj, nameof(obj));
             Guard.NotNull(identityProvider, nameof(identityProvider));
@@ -53,7 +52,7 @@ namespace Database.Entities.Logging
                 throw new ArgumentException($"Object Id={obj.Id} already added. ChangeType={ltrObject.ChangeType}", nameof(obj));
             }
 
-            ltrObject = new LtrObject<T>(obj, identityProvider)
+            ltrObject = new LtrObject(obj, identityProvider)
             {
                 ChangeType = ChangeType.Update,
             };
@@ -62,7 +61,7 @@ namespace Database.Entities.Logging
             this.Objects.Add(ltrObject);
         }
 
-        public void AddObjectAfterChange(IIdentityObject<T> obj, IIdentityProvider<T> identityProvider)
+        public void AddObjectAfterChange(IIdentityObject obj, IIdentityProvider identityProvider)
         {
             Guard.NotNull(obj, nameof(obj));
             Guard.NotNull(identityProvider, nameof(identityProvider));
@@ -76,7 +75,7 @@ namespace Database.Entities.Logging
             ltrObject.SetNewValues(obj, identityProvider);
         }
 
-        public void AddDeletedObject(IIdentityObject<T> obj, IIdentityProvider<T> identityProvider)
+        public void AddDeletedObject(IIdentityObject obj, IIdentityProvider identityProvider)
         {
             Guard.NotNull(obj, nameof(obj));
             Guard.NotNull(identityProvider, nameof(identityProvider));
@@ -87,7 +86,7 @@ namespace Database.Entities.Logging
                 throw new ArgumentException($"Object Id={obj.Id} already added. ChangeType={ltrObject.ChangeType}", nameof(obj));
             }
 
-            ltrObject = new LtrObject<T>(obj, identityProvider)
+            ltrObject = new LtrObject(obj, identityProvider)
             {
                 ChangeType = ChangeType.Delete,
             };

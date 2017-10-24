@@ -12,18 +12,18 @@ namespace Tests.Unit
     {
         [Theory]
         [AutoMoqData]
-        public void ShouldNotCreateOnNullObject(IIdentityProvider<Guid> identityProvider)
+        public void ShouldNotCreateOnNullObject(IIdentityProvider identityProvider)
         {
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new LtrObject<Guid>(null, identityProvider));
+            Assert.Throws<ArgumentNullException>(() => new LtrObject(null, identityProvider));
         }
 
         [Theory]
         [AutoMoqData]
-        public void ShouldCreateLtrObject(IIdentityObject<Guid> obj, IIdentityProvider<Guid> identityProvider)
+        public void ShouldCreateLtrObject(IIdentityObject obj, IIdentityProvider identityProvider)
         {
             // Arrange & Act
-            var sut = new LtrObject<Guid>(obj, identityProvider);
+            var sut = new LtrObject(obj, identityProvider);
 
             // Assert
             Assert.Equal(obj.Id, sut.ObjectId);
@@ -32,10 +32,10 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldAddNewProperties(TestIdentityObject<Guid> obj, IIdentityProvider<Guid> identityProvider)
+        public void ShouldAddNewProperties(TestIdentityObject obj, IIdentityProvider identityProvider)
         {
             // Arrange
-            var sut = new LtrObject<Guid>(obj, identityProvider);
+            var sut = new LtrObject(obj, identityProvider);
 
             // Act
             sut.SetNewValues(obj, identityProvider);
@@ -51,10 +51,10 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldAddOldProperties(TestIdentityObject<Guid> obj, IIdentityProvider<Guid> identityProvider)
+        public void ShouldAddOldProperties(TestIdentityObject obj, IIdentityProvider identityProvider)
         {
             // Arrange
-            var sut = new LtrObject<Guid>(obj, identityProvider);
+            var sut = new LtrObject(obj, identityProvider);
 
             // Act
             sut.SetOldValues(obj, identityProvider);
@@ -68,10 +68,10 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldSkipNonSerializedProperties(TestIdentityObject<Guid> obj, IIdentityProvider<Guid> identityProvider)
+        public void ShouldSkipNonSerializedProperties(TestIdentityObject obj, IIdentityProvider identityProvider)
         {
             // Arrange
-            var sut = new LtrObject<Guid>(obj, identityProvider);
+            var sut = new LtrObject(obj, identityProvider);
 
             // Act
             sut.SetOldValues(obj, identityProvider);
@@ -79,15 +79,14 @@ namespace Tests.Unit
             // Assert
             Assert.Null(sut[nameof(obj.NonSerializedProperty)]);
             Assert.Null(sut[nameof(obj.Id)]);
-            Assert.Null(sut[nameof(obj.ObjectClass)]);
         }
 
         [Theory]
         [AutoMoqData]
-        public void ShouldSetNewAndOldProperties(TestIdentityObject<Guid> obj, IIdentityProvider<Guid> identityProvider, int newInt, string newString)
+        public void ShouldSetNewAndOldProperties(TestIdentityObject obj, IIdentityProvider identityProvider, int newInt, string newString)
         {
             // Arrange
-            var sut = new LtrObject<Guid>(obj, identityProvider);
+            var sut = new LtrObject(obj, identityProvider);
             var startTime = DateTimeOffset.Now;
             var oldInt = obj.IntProperty;
             var oldString = obj.StringProperty;

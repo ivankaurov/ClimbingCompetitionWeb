@@ -9,42 +9,37 @@ using System.Linq;
 
 namespace Database.Entities.Logging
 {
-    [Table("ltr_object")]
-    public class LtrObject<T> : BaseEntity<T>
+    public class LtrObject : BaseEntity
     {
-        internal LtrObject(IIdentityObject<T> obj, IIdentityProvider<T> identityProvider) : base(identityProvider)
+        internal LtrObject(IIdentityObject obj, IIdentityProvider identityProvider) : base(identityProvider)
         {
             Guard.NotNull(obj, nameof(obj));
             this.ObjectId = obj.Id;
             this.LogObjectClass = obj.GetType().FullName;
-            this.Properties = new List<LtrObjectProperties<T>>();
+            this.Properties = new List<LtrObjectProperties>();
         }
 
         protected LtrObject()
         {
         }
-
-        [Required]
-        public T ObjectId { get; protected set; }
-
-        [Required]
-        [MaxLength(2048)]
+        
+        public Guid ObjectId { get; protected set; }
+        
         public string LogObjectClass { get; protected set; }
         
-        [NotMapped]
         public ChangeType ChangeType
         {
             get => Enum.TryParse(this.ChangeTypeString, true, out ChangeType result) ? result : default(ChangeType);
             internal set => this.ChangeTypeString = value.ToString();
         }
 
-        public virtual ICollection<LtrObjectProperties<T>> Properties { get; set; }
+        public virtual ICollection<LtrObjectProperties> Properties { get; set; }
 
-        public T LtrId{ get; set; }
+        public Guid LtrId{ get; set; }
 
-        public virtual Ltr<T> Ltr { get; set; }
+        public virtual Ltr Ltr { get; set; }
 
-        public LtrObjectProperties<T> this[string propertyName]
+        public LtrObjectProperties this[string propertyName]
         {
             get
             {
@@ -53,23 +48,23 @@ namespace Database.Entities.Logging
             }
         }
 
-        protected string ChangeTypeString { get; set; }
+        public string ChangeTypeString { get; private set; }
 
-        internal void SetNewValues(object obj, IIdentityProvider<T> identityProvider)
+        internal void SetNewValues(object obj, IIdentityProvider identityProvider)
         {
             Guard.NotNull(obj, nameof(obj));
             Guard.NotNull(identityProvider, nameof(identityProvider));
             this.SetValues(obj, identityProvider, (p, v) => p.NewValue = v);
         }
 
-        internal void SetOldValues(object obj, IIdentityProvider<T> identityProvider)
+        internal void SetOldValues(object obj, IIdentityProvider identityProvider)
         {
             Guard.NotNull(obj, nameof(obj));
             Guard.NotNull(identityProvider, nameof(identityProvider));
             this.SetValues(obj, identityProvider, (p, v) => p.OldValue = v);
         }
 
-        private void SetValues(object obj, IIdentityProvider<T> identityProvider, Action<LtrObjectProperties<T>, string> updateAction)
+        private void SetValues(object obj, IIdentityProvider identityProvider, Action<LtrObjectProperties, string> updateAction)
         {
             var values = ObjectSerializer.ExtractProperties(obj);
             foreach(var v in values)
@@ -79,12 +74,12 @@ namespace Database.Entities.Logging
             }
         }
 
-        private LtrObjectProperties<T> GetOrAddObjectProperty(string propertyName, Type propertyType, IIdentityProvider<T> identityProvider)
+        private LtrObjectProperties GetOrAddObjectProperty(string propertyName, Type propertyType, IIdentityProvider identityProvider)
         {
             var existingItem = this.Properties.FirstOrDefault(p => p.PropertyName.Equals(propertyName, StringComparison.Ordinal) && p.PropertyType.Equals(propertyType.FullName, StringComparison.Ordinal));
             if(existingItem == null)
             {
-                existingItem = new LtrObjectProperties<T>(identityProvider)
+                existingItem = new LtrObjectProperties(identityProvider)
                 {
                     PropertyName = propertyName,
                     PropertyType = propertyType.FullName,

@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Database
 {
-    internal sealed class IdentityProvider : IIdentityProvider<Guid>
+    internal sealed class IdentityProvider : IIdentityProvider
     {
         private IdentityProvider()
         {
         }
 
-        public static IIdentityProvider<Guid> Instance { get; } = new IdentityProvider();
+        public static IIdentityProvider Instance { get; } = new IdentityProvider();
 
         public Guid CreateNewIdentity() => Guid.NewGuid();
     }
