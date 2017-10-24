@@ -15,7 +15,7 @@ namespace Tests.Unit
         {
             // Arrange
             var sut = IdentityProvider.Instance;
-            var results = new HashSet<Guid>(idCount);
+            var results = new HashSet<string>(idCount, StringComparer.OrdinalIgnoreCase);
             sut.CreateNewIdentity();
 
             // Act

@@ -24,14 +24,8 @@ namespace Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountEntity>().BuildKey("accounts");
-            modelBuilder.Entity<AccountEntity>()
-                        .Property(a => a.EmailAddress)
-                        .IsRequired()
-                        .IsUnicode()
-                        .HasMaxLength(255);
-            modelBuilder.Entity<AccountEntity>()
-                        .Property(a => a.Password)
-                        .IsUnicode();
+            modelBuilder.Entity<AccountEntity>().BuildStringProperty(e => e.EmailAddress, 255, nullable: false);
+            modelBuilder.Entity<AccountEntity>().BuildStringProperty(e => e.Password, nullable: false);
 
             modelBuilder.Entity<Ltr>().BuildKey("ltr");
             modelBuilder.Entity<Ltr>()
@@ -43,17 +37,8 @@ namespace Database
             
             modelBuilder.Entity<LtrObject>().BuildKey("ltr_objects");
             modelBuilder.Entity<LtrObject>().Ignore(p => p.ChangeType);
-            modelBuilder.Entity<LtrObject>()
-                .Property(p => p.ChangeTypeString)
-                .HasColumnName("ChangeType")
-                .IsRequired()
-                .IsUnicode(false)
-                .HasMaxLength(16);
-            modelBuilder.Entity<LtrObject>()
-                .Property(p => p.LogObjectClass)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .IsRequired();
+            modelBuilder.Entity<LtrObject>().BuildStringProperty(e => e.ChangeTypeString, 16, false, "ChangeType", false);
+            modelBuilder.Entity<LtrObject>().BuildStringProperty(e => e.LogObjectClass, 255, false, nullable: false);
             modelBuilder.Entity<LtrObject>()
                 .HasMany(o => o.Properties)
                 .WithOne(p => p.LtrObject)
@@ -62,16 +47,8 @@ namespace Database
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<LtrObjectProperties>().BuildKey("ltr_object_properties");
-            modelBuilder.Entity<LtrObjectProperties>()
-                .Property(p => p.PropertyName)
-                .IsRequired()
-                .IsUnicode(false)
-                .HasMaxLength(255);
-            modelBuilder.Entity<LtrObjectProperties>()
-                .Property(p => p.PropertyType)
-                .IsRequired()
-                .IsUnicode(false)
-                .HasMaxLength(255);
+            modelBuilder.Entity<LtrObjectProperties>().BuildStringProperty(e => e.PropertyName, 255, false, nullable: false);
+            modelBuilder.Entity<LtrObjectProperties>().BuildStringProperty(e => e.PropertyType, 255, false, nullable: false);
 
             base.OnModelCreating(modelBuilder);
         }

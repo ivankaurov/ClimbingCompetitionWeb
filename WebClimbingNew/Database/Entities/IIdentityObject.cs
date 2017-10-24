@@ -6,6 +6,6 @@ namespace Database.Entities
 {
     public interface IIdentityObject
     {
-        Guid Id { get; } 
+        string Id { get; } 
     }
 }

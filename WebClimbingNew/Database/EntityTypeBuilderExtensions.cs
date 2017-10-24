@@ -1,3 +1,5 @@
+using System;
+using System.Linq.Expressions;
 using Database.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -15,9 +17,35 @@ namespace Database
 
             builder.ToTable(tableName)
                 .HasKey(e => e.Id);
-            builder.Property(e => e.Id)
-                .IsRequired()
-                .ValueGeneratedNever();
+            builder.BuildStringProperty(e => e.Id, 64, false, "id", false);
+        }
+
+        public static PropertyBuilder<string> BuildStringProperty<T>(
+            this EntityTypeBuilder<T> builder,
+            Expression<Func<T, string>> property,
+            int? maxLength = null,
+            bool unicode = true,
+            string columnName = null,
+            bool nullable = true)
+            where T : class
+        {
+            Guard.NotNull(builder, nameof(builder));
+            Guard.NotNull(property, nameof(property));
+
+            var result = builder.Property(property)
+                .IsUnicode(unicode)
+                .IsRequired(!nullable);
+            if(!string.IsNullOrWhiteSpace(columnName))
+            {
+                result = result.HasColumnName(columnName);
+            }
+
+            if(maxLength > 0)
+            {
+                result = result.HasMaxLength(maxLength.Value);
+            }
+
+            return result;
         }
     }
 }

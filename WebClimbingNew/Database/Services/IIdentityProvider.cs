@@ -6,6 +6,6 @@ namespace Database.Services
 {
     public interface IIdentityProvider
     {
-        Guid CreateNewIdentity();
+        string CreateNewIdentity();
     }
 }

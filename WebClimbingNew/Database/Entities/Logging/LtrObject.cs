@@ -23,7 +23,7 @@ namespace Database.Entities.Logging
         {
         }
         
-        public Guid ObjectId { get; protected set; }
+        public string ObjectId { get; protected set; }
         
         public string LogObjectClass { get; protected set; }
         
@@ -35,7 +35,7 @@ namespace Database.Entities.Logging
 
         public virtual ICollection<LtrObjectProperties> Properties { get; set; }
 
-        public Guid LtrId{ get; set; }
+        public string LtrId{ get; set; }
 
         public virtual Ltr Ltr { get; set; }
 

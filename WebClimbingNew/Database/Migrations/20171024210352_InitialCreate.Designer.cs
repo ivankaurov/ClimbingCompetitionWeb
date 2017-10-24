@@ -4,14 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
 namespace Database.Migrations
 {
     [DbContext(typeof(ClimbingContext))]
-    [Migration("20171024202428_InitialCreate")]
+    [Migration("20171024210352_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,7 +22,11 @@ namespace Database.Migrations
 
             modelBuilder.Entity("Database.Entities.AccountEntity", b =>
                 {
-                    b.Property<Guid>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasMaxLength(64)
+                        .IsUnicode(false);
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -31,6 +34,7 @@ namespace Database.Migrations
                         .IsUnicode(true);
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .IsUnicode(true);
 
                     b.HasKey("Id");
@@ -40,7 +44,11 @@ namespace Database.Migrations
 
             modelBuilder.Entity("Database.Entities.Logging.Ltr", b =>
                 {
-                    b.Property<Guid>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasMaxLength(64)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -49,7 +57,11 @@ namespace Database.Migrations
 
             modelBuilder.Entity("Database.Entities.Logging.LtrObject", b =>
                 {
-                    b.Property<Guid>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasMaxLength(64)
+                        .IsUnicode(false);
 
                     b.Property<string>("ChangeTypeString")
                         .IsRequired()
@@ -62,9 +74,10 @@ namespace Database.Migrations
                         .HasMaxLength(255)
                         .IsUnicode(false);
 
-                    b.Property<Guid>("LtrId");
+                    b.Property<string>("LtrId")
+                        .IsRequired();
 
-                    b.Property<Guid>("ObjectId");
+                    b.Property<string>("ObjectId");
 
                     b.HasKey("Id");
 
@@ -75,9 +88,14 @@ namespace Database.Migrations
 
             modelBuilder.Entity("Database.Entities.Logging.LtrObjectProperties", b =>
                 {
-                    b.Property<Guid>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasMaxLength(64)
+                        .IsUnicode(false);
 
-                    b.Property<Guid>("LtrObjectId");
+                    b.Property<string>("LtrObjectId")
+                        .IsRequired();
 
                     b.Property<string>("NewValue");
 

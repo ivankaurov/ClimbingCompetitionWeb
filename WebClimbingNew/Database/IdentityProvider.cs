@@ -13,6 +13,6 @@ namespace Database
 
         public static IIdentityProvider Instance { get; } = new IdentityProvider();
 
-        public Guid CreateNewIdentity() => Guid.NewGuid();
+        public string CreateNewIdentity() => Guid.NewGuid().ToString();
     }
 }

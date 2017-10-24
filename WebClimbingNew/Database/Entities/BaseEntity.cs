@@ -21,7 +21,7 @@ namespace Database.Entities
         }
 
         [SerializeSkip]
-        public Guid Id { get; private set; }
+        public string Id { get; private set; }
 
         public DateTimeOffset WhenCreated { get; private set; }
         public DateTimeOffset WhenChanged { get; private set; }

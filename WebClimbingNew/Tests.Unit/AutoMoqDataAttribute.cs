@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Database.Services;
 using Database;
+using Tests.Unit.Utilities;
 
 namespace Tests.Unit
 {

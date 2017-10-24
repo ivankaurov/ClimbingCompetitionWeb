@@ -18,7 +18,7 @@ namespace Database.Entities.Logging
         {
         }
 
-        public Guid LtrObjectId { get; set; }
+        public string LtrObjectId { get; set; }
         public virtual LtrObject LtrObject { get; set; }
         
         public string PropertyName { get; set; }
