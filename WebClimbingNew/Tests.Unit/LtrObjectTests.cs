@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using Database.Entities;
 using Database.Entities.Logging;
-using Database.Services;
 using Tests.Unit.Utilities;
 using Xunit;
 
@@ -10,20 +8,19 @@ namespace Tests.Unit
 {
     public class LtrObjectTests
     {
-        [Theory]
-        [AutoMoqData]
-        public void ShouldNotCreateOnNullObject(IIdentityProvider identityProvider)
+        [Fact]
+        public void ShouldNotCreateOnNullObject()
         {
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new LtrObject(null, identityProvider));
+            Assert.Throws<ArgumentNullException>(() => new LtrObject(null));
         }
 
         [Theory]
         [AutoMoqData]
-        public void ShouldCreateLtrObject(IIdentityObject obj, IIdentityProvider identityProvider)
+        public void ShouldCreateLtrObject(IIdentityObject obj)
         {
             // Arrange & Act
-            var sut = new LtrObject(obj, identityProvider);
+            var sut = new LtrObject(obj);
 
             // Assert
             Assert.Equal(obj.Id, sut.ObjectId);
@@ -32,13 +29,13 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldAddNewProperties(TestIdentityObject obj, IIdentityProvider identityProvider)
+        public void ShouldAddNewProperties(TestIdentityObject obj)
         {
             // Arrange
-            var sut = new LtrObject(obj, identityProvider);
+            var sut = new LtrObject(obj);
 
             // Act
-            sut.SetNewValues(obj, identityProvider);
+            sut.SetNewValues(obj);
 
             // Assert
             Assert.Equal(obj.StringProperty, sut[nameof(obj.StringProperty)].NewValue);
@@ -51,13 +48,13 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldAddOldProperties(TestIdentityObject obj, IIdentityProvider identityProvider)
+        public void ShouldAddOldProperties(TestIdentityObject obj)
         {
             // Arrange
-            var sut = new LtrObject(obj, identityProvider);
+            var sut = new LtrObject(obj);
 
             // Act
-            sut.SetOldValues(obj, identityProvider);
+            sut.SetOldValues(obj);
 
             // Assert
             Assert.Equal(obj.StringProperty, sut[nameof(obj.StringProperty)].OldValue);
@@ -68,13 +65,13 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldSkipNonSerializedProperties(TestIdentityObject obj, IIdentityProvider identityProvider)
+        public void ShouldSkipNonSerializedProperties(TestIdentityObject obj)
         {
             // Arrange
-            var sut = new LtrObject(obj, identityProvider);
+            var sut = new LtrObject(obj);
 
             // Act
-            sut.SetOldValues(obj, identityProvider);
+            sut.SetOldValues(obj);
 
             // Assert
             Assert.Null(sut[nameof(obj.NonSerializedProperty)]);
@@ -83,20 +80,20 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldSetNewAndOldProperties(TestIdentityObject obj, IIdentityProvider identityProvider, int newInt, string newString)
+        public void ShouldSetNewAndOldProperties(TestIdentityObject obj, int newInt, string newString)
         {
             // Arrange
-            var sut = new LtrObject(obj, identityProvider);
+            var sut = new LtrObject(obj);
             var startTime = DateTimeOffset.Now;
             var oldInt = obj.IntProperty;
             var oldString = obj.StringProperty;
 
             // Act
-            sut.SetOldValues(obj, identityProvider);
+            sut.SetOldValues(obj);
             var expectedQuantity = sut.Properties.Count;
             obj.IntProperty = newInt;
             obj.StringProperty = newString;
-            sut.SetNewValues(obj, identityProvider);
+            sut.SetNewValues(obj);
 
             // Assert
             Assert.Equal(expectedQuantity, sut.Properties.Count);

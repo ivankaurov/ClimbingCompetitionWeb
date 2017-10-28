@@ -1,30 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using Database.Services;
 using Utilities;
 
 namespace Database.Entities.Logging
 {
     public class Ltr : BaseEntity
     {
-        public Ltr(IIdentityProvider identityProvider)
-        : base(identityProvider)
-        {
-            this.Objects = new List<LtrObject>();
-        }
+        public virtual ICollection<LtrObject> Objects { get; set; } = new List<LtrObject>();
 
-        protected Ltr()
-        {
-        }
-
-        public virtual ICollection<LtrObject> Objects { get; set; }
-
-        public void AddNewObject(IIdentityObject obj, IIdentityProvider identityProvider)
+        public void AddNewObject(IIdentityObject obj)
         {
             Guard.NotNull(obj, nameof(obj));
-            Guard.NotNull(identityProvider, nameof(identityProvider));
 
             var ltrObject = this.Objects.FirstOrDefault(o => o.ObjectId.Equals(obj.Id));
             if(ltrObject != null)
@@ -32,19 +19,18 @@ namespace Database.Entities.Logging
                 throw new ArgumentException($"Object Id={obj.Id} already added. ChangeType={ltrObject.ChangeType}", nameof(obj));
             }
 
-            ltrObject = new LtrObject(obj, identityProvider)
+            ltrObject = new LtrObject(obj)
             {
                 ChangeType = ChangeType.New,
             };
 
-            ltrObject.SetNewValues(obj, identityProvider);
+            ltrObject.SetNewValues(obj);
             this.Objects.Add(ltrObject);
         }
 
-        public void AddObjectBeforeChange(IIdentityObject obj, IIdentityProvider identityProvider)
+        public void AddObjectBeforeChange(IIdentityObject obj)
         {
             Guard.NotNull(obj, nameof(obj));
-            Guard.NotNull(identityProvider, nameof(identityProvider));
 
             var ltrObject = this.Objects.FirstOrDefault(o => o.ObjectId.Equals(obj.Id));
             if(ltrObject != null)
@@ -52,19 +38,18 @@ namespace Database.Entities.Logging
                 throw new ArgumentException($"Object Id={obj.Id} already added. ChangeType={ltrObject.ChangeType}", nameof(obj));
             }
 
-            ltrObject = new LtrObject(obj, identityProvider)
+            ltrObject = new LtrObject(obj)
             {
                 ChangeType = ChangeType.Update,
             };
 
-            ltrObject.SetOldValues(obj, identityProvider);
+            ltrObject.SetOldValues(obj);
             this.Objects.Add(ltrObject);
         }
 
-        public void AddObjectAfterChange(IIdentityObject obj, IIdentityProvider identityProvider)
+        public void AddObjectAfterChange(IIdentityObject obj)
         {
             Guard.NotNull(obj, nameof(obj));
-            Guard.NotNull(identityProvider, nameof(identityProvider));
 
             var ltrObject = this.Objects.FirstOrDefault(o => o.ObjectId.Equals(obj.Id));
             if(ltrObject == null)
@@ -72,13 +57,12 @@ namespace Database.Entities.Logging
                 throw new ArgumentException($"Object Id={obj.Id} not found.", nameof(obj));
             }
 
-            ltrObject.SetNewValues(obj, identityProvider);
+            ltrObject.SetNewValues(obj);
         }
 
-        public void AddDeletedObject(IIdentityObject obj, IIdentityProvider identityProvider)
+        public void AddDeletedObject(IIdentityObject obj)
         {
             Guard.NotNull(obj, nameof(obj));
-            Guard.NotNull(identityProvider, nameof(identityProvider));
 
             var ltrObject = this.Objects.FirstOrDefault(o => o.ObjectId.Equals(obj.Id));
             if(ltrObject != null)
@@ -86,12 +70,12 @@ namespace Database.Entities.Logging
                 throw new ArgumentException($"Object Id={obj.Id} already added. ChangeType={ltrObject.ChangeType}", nameof(obj));
             }
 
-            ltrObject = new LtrObject(obj, identityProvider)
+            ltrObject = new LtrObject(obj)
             {
                 ChangeType = ChangeType.Delete,
             };
 
-            ltrObject.SetOldValues(obj, identityProvider);
+            ltrObject.SetOldValues(obj);
             this.Objects.Add(ltrObject);
         }
     }

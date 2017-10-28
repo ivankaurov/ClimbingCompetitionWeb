@@ -17,7 +17,9 @@ namespace Database
 
             builder.ToTable(tableName)
                 .HasKey(e => e.Id);
-            builder.BuildStringProperty(e => e.Id, 64, false, "id", false);
+            builder.BuildStringProperty(e => e.Id, 64, false, "id", false)
+            .ValueGeneratedOnAdd()
+            .HasValueGenerator<IdentityProvider>();
         }
 
         public static PropertyBuilder<string> BuildStringProperty<T>(

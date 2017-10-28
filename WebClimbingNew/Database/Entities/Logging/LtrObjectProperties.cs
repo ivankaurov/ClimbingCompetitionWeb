@@ -1,20 +1,8 @@
-﻿using Database.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using Utilities;
-
-namespace Database.Entities.Logging
+﻿namespace Database.Entities.Logging
 {
     public class LtrObjectProperties : BaseEntity
     {
-        internal LtrObjectProperties(IIdentityProvider identityProvider) : base(identityProvider)
-        {
-        }
-
-        protected LtrObjectProperties()
+        internal LtrObjectProperties()
         {
         }
 

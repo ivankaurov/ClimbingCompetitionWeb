@@ -1,6 +1,5 @@
 using System;
 using Database.Entities.Logging;
-using Database.Services;
 using Tests.Unit.Utilities;
 using Xunit;
 
@@ -10,13 +9,13 @@ namespace Tests.Unit
     {
         [Theory]
         [AutoMoqData]
-        public void ShouldAddNewObject(IIdentityProvider identityProvider, TestIdentityObject obj)
+        public void ShouldAddNewObject(TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr(identityProvider);
+            var sut = new Ltr();
 
             // Act
-            sut.AddNewObject(obj, identityProvider);
+            sut.AddNewObject(obj);
 
             // Arrange
             var ltrObj = Assert.Single(sut.Objects);
@@ -28,27 +27,27 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldThrowOnDuplicateAddNewObject(IIdentityProvider identityProvider, TestIdentityObject obj)
+        public void ShouldThrowOnDuplicateAddNewObject(TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr(identityProvider);
+            var sut = new Ltr();
 
             // Act
-            sut.AddNewObject(obj, identityProvider);
+            sut.AddNewObject(obj);
 
             // Arrange
-            Assert.Throws<ArgumentException>(() => sut.AddNewObject(obj, identityProvider));
+            Assert.Throws<ArgumentException>(() => sut.AddNewObject(obj));
         }
 
         [Theory]
         [AutoMoqData]
-        public void ShouldAddDeletedObject(IIdentityProvider identityProvider, TestIdentityObject obj)
+        public void ShouldAddDeletedObject(TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr(identityProvider);
+            var sut = new Ltr();
 
             // Act
-            sut.AddDeletedObject(obj, identityProvider);
+            sut.AddDeletedObject(obj);
 
             // Arrange
             var ltrObj = Assert.Single(sut.Objects);
@@ -60,30 +59,30 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldThrowOnDuplicateAddDeletedObject(IIdentityProvider identityProvider, TestIdentityObject obj)
+        public void ShouldThrowOnDuplicateAddDeletedObject(TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr (identityProvider);
+            var sut = new Ltr();
 
             // Act
-            sut.AddDeletedObject(obj, identityProvider);
+            sut.AddDeletedObject(obj);
 
             // Arrange
-            Assert.Throws<ArgumentException>(() => sut.AddDeletedObject(obj, identityProvider));
+            Assert.Throws<ArgumentException>(() => sut.AddDeletedObject(obj));
         }
 
         [Theory]
         [AutoMoqData]
-        public void ShouldAddChangedObject(IIdentityProvider identityProvider, TestIdentityObject obj, string newValue)
+        public void ShouldAddChangedObject(TestIdentityObject obj, string newValue)
         {
             // Arrange
-            var sut = new Ltr (identityProvider);
+            var sut = new Ltr();
             var oldValue = obj.StringProperty;
 
             // Act
-            sut.AddObjectBeforeChange(obj, identityProvider);
+            sut.AddObjectBeforeChange(obj);
             obj.StringProperty = newValue;
-            sut.AddObjectAfterChange(obj, identityProvider);
+            sut.AddObjectAfterChange(obj);
 
             // Arrange
             var ltrObj = Assert.Single(sut.Objects);
@@ -94,27 +93,27 @@ namespace Tests.Unit
 
         [Theory]
         [AutoMoqData]
-        public void ShouldThrowOnNoOldValues(IIdentityProvider identityProvider, TestIdentityObject obj)
+        public void ShouldThrowOnNoOldValues(TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr(identityProvider);
+            var sut = new Ltr();
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => sut.AddObjectAfterChange(obj, identityProvider));
+            Assert.Throws<ArgumentException>(() => sut.AddObjectAfterChange(obj));
         }
 
         [Theory]
         [AutoMoqData]
-        public void ShouldThrowOnDuplicateAddOldValuesObject(IIdentityProvider identityProvider, TestIdentityObject obj)
+        public void ShouldThrowOnDuplicateAddOldValuesObject(TestIdentityObject obj)
         {
             // Arrange
-            var sut = new Ltr(identityProvider);
+            var sut = new Ltr();
 
             // Act
-            sut.AddDeletedObject(obj, identityProvider);
+            sut.AddDeletedObject(obj);
 
             // Arrange
-            Assert.Throws<ArgumentException>(() => sut.AddObjectBeforeChange(obj, identityProvider));
+            Assert.Throws<ArgumentException>(() => sut.AddObjectBeforeChange(obj));
         }
     }
 }

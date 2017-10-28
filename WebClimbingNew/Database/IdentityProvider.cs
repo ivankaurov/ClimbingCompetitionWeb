@@ -1,18 +1,13 @@
-﻿using Database.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Database
 {
-    internal sealed class IdentityProvider : IIdentityProvider
+    internal sealed class IdentityProvider : ValueGenerator<string>
     {
-        private IdentityProvider()
-        {
-        }
+        public override bool GeneratesTemporaryValues => false;
 
-        public static IIdentityProvider Instance { get; } = new IdentityProvider();
-
-        public string CreateNewIdentity() => Guid.NewGuid().ToString();
+        public override string Next(EntityEntry entry) => Guid.NewGuid().ToString();
     }
 }

@@ -1,14 +1,8 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 using AutoFixture.Xunit2;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Database.Services;
 using Database;
-using Tests.Unit.Utilities;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Tests.Unit
 {
@@ -22,7 +16,7 @@ namespace Tests.Unit
         {
             var fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization());
-            fixture.Register<IIdentityProvider>(() => IdentityProvider.Instance);
+            fixture.Register<ValueGenerator<string>>(() => new IdentityProvider());
             return fixture;
         }
     }

@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Database;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Xunit;
 
 namespace Tests.Unit
@@ -11,18 +14,16 @@ namespace Tests.Unit
     {
         [Theory]
         [AutoMoqData]
-        public void ShouldCreateUniqueId(int idCount)
+        public void ShouldCreateUniqueId(ValueGenerator<string> sut, int idCount)
         {
             // Arrange
-            var sut = IdentityProvider.Instance;
-            var results = new HashSet<string>(idCount, StringComparer.OrdinalIgnoreCase);
-            sut.CreateNewIdentity();
+            var results = new ConcurrentBag<string>();
 
             // Act
-            Parallel.For(0, idCount, n => Assert.True(results.Add(sut.CreateNewIdentity())));
+            Parallel.For(0, idCount, n => results.Add(sut.Next(null)));
 
             // Assert
-            Assert.Equal(idCount, results.Count);
+            Assert.Equal(results.Count, results.Distinct(StringComparer.OrdinalIgnoreCase).Count());
         }
     }
 }

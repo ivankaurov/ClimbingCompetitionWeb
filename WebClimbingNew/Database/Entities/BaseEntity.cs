@@ -1,27 +1,17 @@
-﻿using Database.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+﻿using System;
 using Utilities;
 
 namespace Database.Entities
 {
     public abstract class BaseEntity : IIdentityObject
     {
-        protected BaseEntity(IIdentityProvider identityProvider)
+        protected BaseEntity()
         {
-            this.Id = identityProvider.CreateNewIdentity();
             this.WhenCreated = this.WhenChanged = DateTimeOffset.Now;
         }
 
-        protected BaseEntity()
-        {
-        }
-
         [SerializeSkip]
-        public string Id { get; private set; }
+        public string Id { get; set; }
 
         public DateTimeOffset WhenCreated { get; private set; }
         public DateTimeOffset WhenChanged { get; private set; }

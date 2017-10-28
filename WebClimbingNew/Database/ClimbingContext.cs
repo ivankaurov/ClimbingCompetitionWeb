@@ -1,10 +1,6 @@
 ﻿using Database.Entities;
 using Database.Entities.Logging;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Database
 {

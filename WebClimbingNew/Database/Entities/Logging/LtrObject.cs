@@ -1,9 +1,5 @@
-﻿using Database.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 using Utilities;
 using System.Linq;
 
@@ -11,7 +7,7 @@ namespace Database.Entities.Logging
 {
     public class LtrObject : BaseEntity
     {
-        internal LtrObject(IIdentityObject obj, IIdentityProvider identityProvider) : base(identityProvider)
+        internal LtrObject(IIdentityObject obj)
         {
             Guard.NotNull(obj, nameof(obj));
             this.ObjectId = obj.Id;
@@ -50,36 +46,34 @@ namespace Database.Entities.Logging
 
         public string ChangeTypeString { get; private set; }
 
-        internal void SetNewValues(object obj, IIdentityProvider identityProvider)
+        internal void SetNewValues(object obj)
         {
             Guard.NotNull(obj, nameof(obj));
-            Guard.NotNull(identityProvider, nameof(identityProvider));
-            this.SetValues(obj, identityProvider, (p, v) => p.NewValue = v);
+            this.SetValues(obj, (p, v) => p.NewValue = v);
         }
 
-        internal void SetOldValues(object obj, IIdentityProvider identityProvider)
+        internal void SetOldValues(object obj)
         {
             Guard.NotNull(obj, nameof(obj));
-            Guard.NotNull(identityProvider, nameof(identityProvider));
-            this.SetValues(obj, identityProvider, (p, v) => p.OldValue = v);
+            this.SetValues(obj, (p, v) => p.OldValue = v);
         }
 
-        private void SetValues(object obj, IIdentityProvider identityProvider, Action<LtrObjectProperties, string> updateAction)
+        private void SetValues(object obj, Action<LtrObjectProperties, string> updateAction)
         {
             var values = ObjectSerializer.ExtractProperties(obj);
             foreach(var v in values)
             {
-                var item = this.GetOrAddObjectProperty(v.Key, v.Value.Type, identityProvider);
+                var item = this.GetOrAddObjectProperty(v.Key, v.Value.Type);
                 updateAction(item, v.Value.Value?.ToString());
             }
         }
 
-        private LtrObjectProperties GetOrAddObjectProperty(string propertyName, Type propertyType, IIdentityProvider identityProvider)
+        private LtrObjectProperties GetOrAddObjectProperty(string propertyName, Type propertyType)
         {
             var existingItem = this.Properties.FirstOrDefault(p => p.PropertyName.Equals(propertyName, StringComparison.Ordinal) && p.PropertyType.Equals(propertyType.FullName, StringComparison.Ordinal));
             if(existingItem == null)
             {
-                existingItem = new LtrObjectProperties(identityProvider)
+                existingItem = new LtrObjectProperties
                 {
                     PropertyName = propertyName,
                     PropertyType = propertyType.FullName,

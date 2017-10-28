@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Database.Entities.Logging
+﻿namespace Database.Entities.Logging
 {
     public enum ChangeType
     {
