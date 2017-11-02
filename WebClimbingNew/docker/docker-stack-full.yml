@@ -1,0 +1,23 @@
+version: "3.4"
+services:
+  web:
+    image: webclimbingnew:latest
+    ports:
+      - 4080:80
+    deploy:
+      replicas: 4
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        window: 30s
+        max_attempts: 5
+      update_config:
+        parallelism: 1
+        delay: 30s
+    environment:
+      - ConnectionStrings__Database=Host=postgres-sql;Database=ClimbingLocal;Username=postgres;Password=P@ssw0rd;
+
+  postgres-sql:
+    image: postgres:10.0
+    environment:
+      - POSTGRES_PASSWORD=P@ssw0rd

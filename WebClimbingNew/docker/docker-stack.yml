@@ -1,0 +1,25 @@
+version: "3.4"
+services:
+  web:
+    image: webclimbingnew:latest
+    ports:
+      - 3080:80
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        window: 30s
+        max_attempts: 5
+      update_config:
+        parallelism: 1
+        delay: 30s
+    environment:
+      - ConnectionStrings__Database=Host=postgres-sql;Database=Climbing;Username=postgres;Password=P@ssw0rd;
+    networks:
+      - extn
+  
+networks:
+  extn:
+    external:
+      name: my-sql
