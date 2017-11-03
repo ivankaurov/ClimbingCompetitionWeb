@@ -1,4 +1,4 @@
-﻿namespace Database.Entities.Logging
+﻿namespace Climbing.Web.Model.Logging
 {
     public enum ChangeType
     {

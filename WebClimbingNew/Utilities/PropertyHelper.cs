@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Utilities
+namespace Climbing.Web.Utilities
 {
     public static class PropertyHelper
     {

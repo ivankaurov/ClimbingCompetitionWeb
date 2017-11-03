@@ -3,12 +3,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Database;
+using Climbing.Web.Database;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Xunit;
 
-namespace Tests.Unit
+namespace Climbing.Web.Tests.Unit
 {
     public class IdentityProviderTests
     {

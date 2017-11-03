@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Climbing.Web.Portal</AssemblyName>
+    <DefaultNamespace>Climbing.Web.Portal</DefaultNamespace>
   </PropertyGroup>
 
   <ItemGroup>

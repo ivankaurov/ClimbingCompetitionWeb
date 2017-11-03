@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Utilities
+namespace Climbing.Web.Utilities
 {
     public static class MethodHelper
     {

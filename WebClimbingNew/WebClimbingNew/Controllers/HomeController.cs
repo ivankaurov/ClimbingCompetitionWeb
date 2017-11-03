@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebClimbingNew.Models;
+using Climbing.Web.Portal.Models;
 
-namespace WebClimbingNew.Controllers
+namespace Climbing.Web.Portal.Controllers
 {
     public class HomeController : Controller
     {

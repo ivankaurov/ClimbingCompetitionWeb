@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
-using Utilities;
+using Climbing.Web.Utilities;
 using Xunit;
 
-namespace Tests.Unit
+namespace Climbing.Web.Tests.Unit
 {
     public class ObjectSerializerTests
     {

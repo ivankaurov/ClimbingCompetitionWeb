@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Utilities;
+using Climbing.Web.Utilities;
 using Xunit;
 
-namespace Tests.Unit
+namespace Climbing.Web.Tests.Unit
 {
     public class GuardTests
     {

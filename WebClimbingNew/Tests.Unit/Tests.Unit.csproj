@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
-
     <IsPackable>false</IsPackable>
+    <AssemblyName>Climbing.Web.Tests.Unit</AssemblyName>
+    <DefaultNamespace>Climbing.Web.Tests.Unit</DefaultNamespace>
   </PropertyGroup>
 
   <ItemGroup>

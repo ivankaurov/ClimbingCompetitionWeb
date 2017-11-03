@@ -9,19 +9,6 @@ namespace Database.Postgres.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "accounts",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "varchar(64)", unicode: false, maxLength: 64, nullable: false),
-                    EmailAddress = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_accounts", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ltr",
                 columns: table => new
                 {
@@ -88,9 +75,6 @@ namespace Database.Postgres.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "accounts");
-
             migrationBuilder.DropTable(
                 name: "ltr_object_properties");
 

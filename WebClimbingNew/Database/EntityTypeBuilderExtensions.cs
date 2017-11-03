@@ -1,11 +1,11 @@
 using System;
 using System.Linq.Expressions;
-using Database.Entities;
+using Climbing.Web.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Utilities;
+using Climbing.Web.Utilities;
 
-namespace Database
+namespace Climbing.Web.Database
 {
     internal static class EntityTypeBuilderExtensions
     {

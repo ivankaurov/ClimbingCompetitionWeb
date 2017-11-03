@@ -1,7 +1,8 @@
 ﻿using System;
-using Utilities;
 
-namespace Database.Entities
+using Climbing.Web.Utilities;
+
+namespace Climbing.Web.Model
 {
     public abstract class BaseEntity : IIdentityObject
     {

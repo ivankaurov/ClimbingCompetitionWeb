@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Utilities;
 using System.Linq;
 
-namespace Database.Entities.Logging
+using Climbing.Web.Utilities;
+
+namespace Climbing.Web.Model.Logging
 {
     public class LtrObject : BaseEntity
     {

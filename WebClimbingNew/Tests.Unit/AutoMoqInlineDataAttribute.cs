@@ -1,6 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 
-namespace Tests.Unit
+namespace Climbing.Web.Tests.Unit
 {
     internal class AutoMoqInlineDataAttribute : InlineAutoDataAttribute
     {

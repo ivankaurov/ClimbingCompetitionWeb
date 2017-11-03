@@ -1,6 +1,6 @@
 using System;
 
-namespace WebClimbingNew.Models
+namespace Climbing.Web.Portal.Models
 {
     public class ErrorViewModel
     {

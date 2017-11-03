@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Database
+namespace Climbing.Web.Database
 {
     internal sealed class IdentityProvider : ValueGenerator<string>
     {

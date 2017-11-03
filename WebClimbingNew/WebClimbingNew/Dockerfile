@@ -3,4 +3,4 @@ ARG source
 WORKDIR /app
 EXPOSE 80
 COPY ${source} .
-ENTRYPOINT [ "dotnet", "WebClimbingNew.dll" ]
+ENTRYPOINT [ "dotnet", "Climbing.Web.Portal.dll" ]

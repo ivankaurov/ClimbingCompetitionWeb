@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Utilities
+namespace Climbing.Web.Utilities
 {
     public static class Guard
     {

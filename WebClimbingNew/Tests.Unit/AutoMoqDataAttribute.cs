@@ -1,10 +1,10 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 using AutoFixture.Xunit2;
-using Database;
+using Climbing.Web.Database;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
-namespace Tests.Unit
+namespace Climbing.Web.Tests.Unit
 {
     internal sealed class AutoMoqDataAttribute : AutoDataAttribute
     {

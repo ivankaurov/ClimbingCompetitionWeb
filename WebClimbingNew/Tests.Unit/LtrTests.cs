@@ -1,9 +1,9 @@
 using System;
-using Database.Entities.Logging;
-using Tests.Unit.Utilities;
+using Climbing.Web.Model.Logging;
+using Climbing.Web.Tests.Unit.Utilities;
 using Xunit;
 
-namespace Tests.Unit
+namespace Climbing.Web.Tests.Unit
 {
     public class LtrTests
     {

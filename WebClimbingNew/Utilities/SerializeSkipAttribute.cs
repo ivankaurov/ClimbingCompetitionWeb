@@ -1,6 +1,6 @@
 using System;
 
-namespace Utilities
+namespace Climbing.Web.Utilities
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class SerializeSkipAttribute : Attribute

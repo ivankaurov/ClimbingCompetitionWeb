@@ -1,16 +1,15 @@
-﻿using Database.Entities;
-using Database.Entities.Logging;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Database
+using Climbing.Web.Model;
+using Climbing.Web.Model.Logging;
+
+namespace Climbing.Web.Database
 {
     public class ClimbingContext : DbContext
     {
         public ClimbingContext(DbContextOptions<ClimbingContext> options) : base(options)
         {
         }
-
-        public DbSet<AccountEntity> Accounts { get; set; }
 
         public DbSet<Ltr> LogicTransactions { get; set; }
 
@@ -19,10 +18,6 @@ namespace Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AccountEntity>().BuildKey("accounts");
-            modelBuilder.Entity<AccountEntity>().BuildStringProperty(e => e.EmailAddress, 255, nullable: false);
-            modelBuilder.Entity<AccountEntity>().BuildStringProperty(e => e.Password, nullable: false);
-
             modelBuilder.Entity<Ltr>().BuildKey("ltr");
             modelBuilder.Entity<Ltr>()
                 .HasMany(l => l.Objects)

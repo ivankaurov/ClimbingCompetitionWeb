@@ -1,4 +1,4 @@
-﻿namespace Database.Entities
+﻿namespace Climbing.Web.Model
 {
     public interface IIdentityObject
     {

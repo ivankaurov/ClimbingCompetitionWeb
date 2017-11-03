@@ -2,9 +2,10 @@ using System;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Utilities;
+using Climbing.Web.Database;
+using Climbing.Web.Utilities;
 
-namespace Database.SqlServer
+namespace Climbing.Web.Database.Postgres
 {
     public static class InstallServices
     {

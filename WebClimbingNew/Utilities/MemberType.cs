@@ -1,4 +1,4 @@
-namespace Utilities
+namespace Climbing.Web.Utilities
 {
     public enum MemberType
     {

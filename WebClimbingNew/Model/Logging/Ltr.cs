@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Utilities;
+using Climbing.Web.Utilities;
 
-namespace Database.Entities.Logging
+namespace Climbing.Web.Model.Logging
 {
     public class Ltr : BaseEntity
     {

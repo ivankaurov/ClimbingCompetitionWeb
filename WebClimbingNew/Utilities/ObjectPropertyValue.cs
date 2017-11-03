@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utilities
+namespace Climbing.Web.Utilities
 {
     public sealed class ObjectPropertyValue
     {
