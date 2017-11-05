@@ -6,3 +6,10 @@ services:
       context: ../WebClimbingNew
       args:
         source: ./obj/Docker
+
+  api:
+    image: webclimbingapi:latest
+    build:
+      context: ../WebClimbing.Api
+      args:
+        source: ./obj/Docker

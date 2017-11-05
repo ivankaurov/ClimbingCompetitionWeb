@@ -18,6 +18,25 @@ services:
       - ConnectionStrings__Database=Host=postgres-sql;Database=Climbing;Username=postgres;Password=P@ssw0rd;
     networks:
       - extn
+
+  webapi:
+    image: webclimbingapi:latest
+    ports:
+      - 3081:80
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        window: 30s
+        max_attempts: 5
+      update_config:
+        parallelism: 1
+        delay: 30s
+    environment:
+      - ConnectionStrings__Database=Host=postgres-sql;Database=Climbing;Username=postgres;Password=P@ssw0rd;
+    networks:
+      - extn
   
 networks:
   extn:
