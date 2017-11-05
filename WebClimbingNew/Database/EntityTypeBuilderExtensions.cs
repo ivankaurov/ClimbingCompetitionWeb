@@ -17,9 +17,9 @@ namespace Climbing.Web.Database
 
             builder.ToTable(tableName)
                 .HasKey(e => e.Id);
-            builder.BuildStringProperty(e => e.Id, 64, false, "id", false)
-            .ValueGeneratedOnAdd()
-            .HasValueGenerator<IdentityProvider>();
+            builder.Property(e => e.Id)
+            .IsRequired()
+            .ValueGeneratedOnAdd();
         }
 
         public static PropertyBuilder<string> BuildStringProperty<T>(

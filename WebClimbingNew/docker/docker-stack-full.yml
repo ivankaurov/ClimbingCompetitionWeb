@@ -5,7 +5,7 @@ services:
     ports:
       - 4080:80
     deploy:
-      replicas: 4
+      replicas: 1
       restart_policy:
         condition: on-failure
         delay: 10s
@@ -15,9 +15,9 @@ services:
         parallelism: 1
         delay: 30s
     environment:
-      - ConnectionStrings__Database=Host=postgres-sql;Database=ClimbingLocal;Username=postgres;Password=P@ssw0rd;
+      - ConnectionStrings__Database=Host=postgres-sql-swarm;Database=ClimbingLocal;Username=postgres;Password=P@ssw0rd;
 
-  postgres-sql:
+  postgres-sql-swarm:
     image: postgres:10.0
     environment:
       - POSTGRES_PASSWORD=P@ssw0rd

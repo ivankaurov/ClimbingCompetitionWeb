@@ -1,4 +1,6 @@
-﻿namespace Climbing.Web.Model.Logging
+﻿using System;
+
+namespace Climbing.Web.Model.Logging
 {
     public class LtrObjectProperties : BaseEntity
     {
@@ -6,7 +8,7 @@
         {
         }
 
-        public string LtrObjectId { get; set; }
+        public Guid LtrObjectId { get; set; }
         public virtual LtrObject LtrObject { get; set; }
         
         public string PropertyName { get; set; }

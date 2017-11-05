@@ -16,7 +16,6 @@ namespace Climbing.Web.Tests.Unit
         {
             var fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization());
-            fixture.Register<ValueGenerator<string>>(() => new IdentityProvider());
             return fixture;
         }
     }

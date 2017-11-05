@@ -6,13 +6,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System;
 
 namespace Database.Postgres.Migrations
 {
     [DbContext(typeof(ClimbingContext))]
-    [Migration("20171103200003_InitialCreate")]
+    [Migration("20171105104933_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,11 +23,8 @@ namespace Database.Postgres.Migrations
 
             modelBuilder.Entity("Climbing.Web.Model.Logging.Ltr", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasMaxLength(64)
-                        .IsUnicode(false);
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.HasKey("Id");
 
@@ -37,11 +33,8 @@ namespace Database.Postgres.Migrations
 
             modelBuilder.Entity("Climbing.Web.Model.Logging.LtrObject", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasMaxLength(64)
-                        .IsUnicode(false);
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ChangeTypeString")
                         .IsRequired()
@@ -54,10 +47,9 @@ namespace Database.Postgres.Migrations
                         .HasMaxLength(255)
                         .IsUnicode(false);
 
-                    b.Property<string>("LtrId")
-                        .IsRequired();
+                    b.Property<Guid>("LtrId");
 
-                    b.Property<string>("ObjectId");
+                    b.Property<Guid>("ObjectId");
 
                     b.HasKey("Id");
 
@@ -68,14 +60,10 @@ namespace Database.Postgres.Migrations
 
             modelBuilder.Entity("Climbing.Web.Model.Logging.LtrObjectProperties", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasMaxLength(64)
-                        .IsUnicode(false);
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<string>("LtrObjectId")
-                        .IsRequired();
+                    b.Property<Guid>("LtrObjectId");
 
                     b.Property<string>("NewValue");
 

@@ -20,7 +20,7 @@ namespace Climbing.Web.Model.Logging
         {
         }
         
-        public string ObjectId { get; protected set; }
+        public Guid ObjectId { get; protected set; }
         
         public string LogObjectClass { get; protected set; }
         
@@ -32,7 +32,7 @@ namespace Climbing.Web.Model.Logging
 
         public virtual ICollection<LtrObjectProperties> Properties { get; set; }
 
-        public string LtrId{ get; set; }
+        public Guid LtrId{ get; set; }
 
         public virtual Ltr Ltr { get; set; }
 
