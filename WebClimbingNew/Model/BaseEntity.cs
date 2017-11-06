@@ -12,7 +12,7 @@ namespace Climbing.Web.Model
         }
 
         [SerializeSkip]
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
         public DateTimeOffset WhenCreated { get; private set; }
         public DateTimeOffset WhenChanged { get; private set; }

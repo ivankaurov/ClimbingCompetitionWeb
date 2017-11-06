@@ -11,6 +11,14 @@
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "build",
+            "args": [
+                "${workspaceRoot}/WebClimbing.Api/WebClimbing.Api.csproj"
+            ],
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
         }
     ]
 }

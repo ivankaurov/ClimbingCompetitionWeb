@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/WebClimbingNew/bin/Debug/netcoreapp2.0/WebClimbingNew.dll",
+            "program": "${workspaceRoot}/WebClimbingNew/bin/Debug/netcoreapp2.0/Climbing.Web.Portal.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/WebClimbingNew",
+            "cwd": "${workspaceRoot}/Climbing.Web.Portal",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {

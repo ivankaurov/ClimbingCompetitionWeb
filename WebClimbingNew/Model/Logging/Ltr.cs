@@ -7,7 +7,7 @@ namespace Climbing.Web.Model.Logging
 {
     public class Ltr : BaseEntity
     {
-        public virtual ICollection<LtrObject> Objects { get; set; } = new List<LtrObject>();
+        public ICollection<LtrObject> Objects { get; set; } = new List<LtrObject>();
 
         public void AddNewObject(IIdentityObject obj)
         {

@@ -30,11 +30,11 @@ namespace Climbing.Web.Model.Logging
             internal set => this.ChangeTypeString = value.ToString();
         }
 
-        public virtual ICollection<LtrObjectProperties> Properties { get; set; }
+        public ICollection<LtrObjectProperties> Properties { get; set; }
 
         public Guid LtrId{ get; set; }
 
-        public virtual Ltr Ltr { get; set; }
+        public Ltr Ltr { get; set; }
 
         public LtrObjectProperties this[string propertyName]
         {

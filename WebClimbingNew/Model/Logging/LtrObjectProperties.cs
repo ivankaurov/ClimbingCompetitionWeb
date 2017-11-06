@@ -9,7 +9,7 @@ namespace Climbing.Web.Model.Logging
         }
 
         public Guid LtrObjectId { get; set; }
-        public virtual LtrObject LtrObject { get; set; }
+        public LtrObject LtrObject { get; set; }
         
         public string PropertyName { get; set; }
         

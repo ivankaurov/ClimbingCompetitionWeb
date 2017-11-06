@@ -37,6 +37,10 @@ namespace Climbing.Web.Utilities
             {
                 return new Action<TObject, TResult>((obj, v) => fi.SetValue(obj, v));
             }
+            catch(ArgumentException) when (member is PropertyInfo pi)
+            {
+                return new Action<TObject, TResult>((obj, v) => pi.SetValue(obj, v));
+            }
             
             return Expression.Lambda<Action<TObject, TResult>>(assign, parameter, assignParameter).Compile();
         }
