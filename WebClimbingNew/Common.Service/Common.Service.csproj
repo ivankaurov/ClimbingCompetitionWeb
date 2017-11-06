@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <DefaultNamespace>Climbing.Web.Model</DefaultNamespace>
-    <AssemblyName>Climbing.Web.Model</AssemblyName>
+    <DefaultNamespace>Climbing.Web.Common.Service</DefaultNamespace>
+    <AssemblyName>Climbing.Web.Common.Service</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj" />
+    <ProjectReference Include="..\Model.Facade\Model.Facade.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
 

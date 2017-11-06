@@ -2,13 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <DefaultNamespace>Climbing.Web.Model</DefaultNamespace>
-    <AssemblyName>Climbing.Web.Model</AssemblyName>
+    <DefaultNamespace>Climbing.Web.Model.Facade</DefaultNamespace>
+    <AssemblyName>Climbing.Web.Model.Facade</AssemblyName>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\Shared\AssemblyInfo.Shared.cs">

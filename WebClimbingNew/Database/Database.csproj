@@ -15,4 +15,10 @@
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Shared.cs">
+      <Link>AssemblyInfo.Shared.cs</Link>
+    </Compile>
+  </ItemGroup>
+
 </Project>

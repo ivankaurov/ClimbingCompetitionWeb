@@ -18,8 +18,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Database\Database.csproj" />
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    <ProjectReference Include="..\WebClimbing.Api\WebClimbing.Api.csproj" />
+    <ProjectReference Include="..\WebClimbingNew\WebClimbingNew.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Shared.cs">
+      <Link>AssemblyInfo.Shared.cs</Link>
+    </Compile>
   </ItemGroup>
 
 </Project>
