@@ -12,9 +12,10 @@ using System;
 namespace Database.Postgres.Migrations
 {
     [DbContext(typeof(ClimbingContext))]
-    partial class ClimbingContextModelSnapshot : ModelSnapshot
+    [Migration("20171109134238_PeopleAndTeams")]
+    partial class PeopleAndTeams
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
