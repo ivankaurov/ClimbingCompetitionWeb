@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Climbing.Web.Common.Service;
+using Climbing.Web.Database;
 using Climbing.Web.Database.Postgres;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,8 +27,10 @@ namespace Climbing.Web.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDatabase(Configuration.GetConnectionString("Database"));
-            services.AddMvc();
+            services.AddCommonServices()
+                    .AddCommonDatabaseServices()
+                    .AddDatabase(Configuration.GetConnectionString("Database"))
+                    .AddMvc();
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>

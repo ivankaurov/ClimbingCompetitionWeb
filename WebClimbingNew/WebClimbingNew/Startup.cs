@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Climbing.Web.Database.Postgres;
+using Climbing.Web.Common.Service;
+using Climbing.Web.Database;
 
 namespace Climbing.Web.Portal
 {
@@ -22,7 +24,9 @@ namespace Climbing.Web.Portal
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDatabase(Configuration.GetConnectionString("Database"));
+            services.AddCommonServices()
+                    .AddCommonDatabaseServices()
+                    .AddDatabase(Configuration.GetConnectionString("Database"));
             services.AddMvc();
         }
 

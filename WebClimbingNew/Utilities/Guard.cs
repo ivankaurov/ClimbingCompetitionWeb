@@ -28,7 +28,30 @@ namespace Climbing.Web.Utilities
                     throw new ArgumentNullException(string.IsNullOrWhiteSpace(parameterName) ? nameof(value) : parameterName);
                 }
 
-                throw new ArgumentNullException(string.IsNullOrWhiteSpace(parameterName) ? nameof(value) : parameterName);
+                throw new ArgumentNullException(string.IsNullOrWhiteSpace(parameterName) ? nameof(value) : parameterName, exceptionMessage);
+            }
+        }
+
+        public static void Requires(bool predicate, string parameterName = null, string exceptionMessage = null)
+        {
+            if(!predicate)
+            {
+                if(string.IsNullOrWhiteSpace(parameterName))
+                {
+                    if(string.IsNullOrWhiteSpace(exceptionMessage))
+                    {
+                        throw new ArgumentException();
+                    }
+
+                    throw new ArgumentException(exceptionMessage);
+                }
+
+                if (string.IsNullOrWhiteSpace(exceptionMessage))
+                {
+                    throw new ArgumentException(parameterName);
+                }
+
+                throw new ArgumentException(exceptionMessage, parameterName);
             }
         }
     }

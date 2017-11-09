@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Climbing.Web.Common.Service;
 using Climbing.Web.Database;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -34,5 +36,14 @@ namespace Climbing.Web.Portal
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
+
+        private static async Task Migrate(IServiceProvider serviceProvider)
+        {
+            using(var scope = serviceProvider.CreateScope())
+            {
+                var helper = scope.ServiceProvider.GetRequiredService<IContextHelper>();
+                await helper.Migrate(CancellationToken.None);
+            }
+        }
     }
 }
