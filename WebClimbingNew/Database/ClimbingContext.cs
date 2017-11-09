@@ -3,9 +3,11 @@
 using Climbing.Web.Model;
 using Climbing.Web.Model.Logging;
 using Climbing.Web.Database.EntityBuilderExtensions;
+using Climbing.Web.Utilities;
 using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Climbing.Web.Database
 {
@@ -41,6 +43,44 @@ namespace Climbing.Web.Database
                         .MapPersonEntity()
                         .MapTeamEntity();
             base.OnModelCreating(modelBuilder);
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            ChangeTracker.DetectChanges();
+
+            foreach(var entry in ChangeTracker.Entries()
+                            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+                            .Select(e => e.Entity)
+                            .OfType<BaseEntity>())
+            {
+                entry.SetProperty(e => e.WhenChanged, DateTimeOffset.UtcNow);
+            }
+
+            ChangeTracker.AutoDetectChangesEnabled = false;
+            var result = base.SaveChanges(acceptAllChangesOnSuccess);
+            ChangeTracker.AutoDetectChangesEnabled = true;
+
+            return result;
+        }
+
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ChangeTracker.DetectChanges();
+
+            foreach(var entry in ChangeTracker.Entries()
+                            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+                            .Select(e => e.Entity)
+                            .OfType<BaseEntity>())
+            {
+                entry.SetProperty(e => e.WhenChanged, DateTimeOffset.UtcNow);
+            }
+
+            ChangeTracker.AutoDetectChangesEnabled = false;
+            var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            ChangeTracker.AutoDetectChangesEnabled = true;
+
+            return result;
         }
     }
 

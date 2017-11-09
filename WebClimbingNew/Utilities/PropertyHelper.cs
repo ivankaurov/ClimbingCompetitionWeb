@@ -26,20 +26,24 @@ namespace Climbing.Web.Utilities
         {
             var parameter = Expression.Parameter(typeof(TObject));
             var assignParameter = Expression.Parameter(typeof(TResult));
-            var propertyExpession = Expression.PropertyOrField(parameter, member.Name);
+            MemberExpression propertyExpression;
+            if(member is PropertyInfo pi)
+            {
+                propertyExpression = Expression.Property(parameter, pi.GetSetMethod(true));
+            }
+            else
+            {
+                propertyExpression = Expression.Field(parameter, member.Name);
+            }
             
             BinaryExpression assign;
             try
             {
-                assign = Expression.Assign(propertyExpession, assignParameter);
+                assign = Expression.Assign(propertyExpression, assignParameter);
             }
             catch(ArgumentException) when (member is FieldInfo fi)
             {
                 return new Action<TObject, TResult>((obj, v) => fi.SetValue(obj, v));
-            }
-            catch(ArgumentException) when (member is PropertyInfo pi)
-            {
-                return new Action<TObject, TResult>((obj, v) => pi.SetValue(obj, v));
             }
             
             return Expression.Lambda<Action<TObject, TResult>>(assign, parameter, assignParameter).Compile();
