@@ -26,8 +26,8 @@ namespace Climbing.Web.Database
 
         public async Task<bool> IsMigrated(CancellationToken cancellationToken)
         {
-            var migrated = (await this.context.Database.GetPendingMigrationsAsync(cancellationToken)).Any();
-            if(!migrated)
+            var hasMigrations = (await this.context.Database.GetPendingMigrationsAsync(cancellationToken)).Any();
+            if(hasMigrations)
             {
                 return false;
             }
@@ -44,13 +44,10 @@ namespace Climbing.Web.Database
                 {
                     await this.Seed(cancellationToken);
                 }
-                catch(OperationCanceledException)
-                {
-                    throw;
-                }
                 catch(Exception ex)
                 {
                     this.logger.LogError(ex, "Seeding failed. {0}", ex.Message);
+                    throw;
                 }
             }
         }

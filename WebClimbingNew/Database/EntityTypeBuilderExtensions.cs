@@ -16,13 +16,13 @@ namespace Climbing.Web.Database
 
             modelBuilder.Entity<T>().BuildKey(tableName);
             modelBuilder.Entity<T>().Property(e => e.WhenCreated)
+                .HasColumnName("when_created")
                 .IsRequired()
                 .ValueGeneratedOnAdd()
                 .HasValueGenerator<TimeStampValueGenerator>();
             modelBuilder.Entity<T>().Property(e => e.WhenChanged)
                 .IsRequired()
-                .ValueGeneratedOnAddOrUpdate()
-                .HasValueGenerator<TimeStampValueGenerator>();
+                .HasColumnName("when_changed");
             return modelBuilder.Entity<T>();
         }
 

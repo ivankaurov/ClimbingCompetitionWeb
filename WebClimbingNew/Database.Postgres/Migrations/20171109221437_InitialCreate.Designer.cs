@@ -12,8 +12,8 @@ using System;
 namespace Database.Postgres.Migrations
 {
     [DbContext(typeof(ClimbingContext))]
-    [Migration("20171109134238_PeopleAndTeams")]
-    partial class PeopleAndTeams
+    [Migration("20171109221437_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,10 +28,11 @@ namespace Database.Postgres.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTimeOffset>("WhenChanged")
-                        .ValueGeneratedOnAddOrUpdate();
+                        .HasColumnName("when_changed");
 
                     b.Property<DateTimeOffset>("WhenCreated")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("when_created");
 
                     b.HasKey("Id");
 
@@ -59,10 +60,11 @@ namespace Database.Postgres.Migrations
                     b.Property<Guid>("ObjectId");
 
                     b.Property<DateTimeOffset>("WhenChanged")
-                        .ValueGeneratedOnAddOrUpdate();
+                        .HasColumnName("when_changed");
 
                     b.Property<DateTimeOffset>("WhenCreated")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("when_created");
 
                     b.HasKey("Id");
 
@@ -93,10 +95,11 @@ namespace Database.Postgres.Migrations
                         .IsUnicode(false);
 
                     b.Property<DateTimeOffset>("WhenChanged")
-                        .ValueGeneratedOnAddOrUpdate();
+                        .HasColumnName("when_changed");
 
                     b.Property<DateTimeOffset>("WhenCreated")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("when_created");
 
                     b.HasKey("Id");
 
@@ -131,10 +134,11 @@ namespace Database.Postgres.Migrations
                         .IsUnicode(true);
 
                     b.Property<DateTimeOffset>("WhenChanged")
-                        .ValueGeneratedOnAddOrUpdate();
+                        .HasColumnName("when_changed");
 
                     b.Property<DateTimeOffset>("WhenCreated")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("when_created");
 
                     b.HasKey("Id");
 
@@ -165,10 +169,11 @@ namespace Database.Postgres.Migrations
                         .HasColumnName("parent_team_id");
 
                     b.Property<DateTimeOffset>("WhenChanged")
-                        .ValueGeneratedOnAddOrUpdate();
+                        .HasColumnName("when_changed");
 
                     b.Property<DateTimeOffset>("WhenCreated")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("when_created");
 
                     b.HasKey("Id");
 
