@@ -40,7 +40,7 @@ namespace Climbing.Web.Common.Service
 
                         this.logger.LogTrace("Database isn't migrated. Waiting for {0} for the next poll", pollInterval);
 
-                        await Task.Delay(pollInterval);
+                        await Task.Delay(pollInterval, mixedCts.Token);
                     }
                 }
                 catch(OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
