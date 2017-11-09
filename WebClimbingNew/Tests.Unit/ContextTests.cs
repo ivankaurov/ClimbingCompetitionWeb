@@ -20,9 +20,13 @@ namespace Climbing.Web.Tests.Unit
             var ltr = new Ltr();
             ltr.AddNewObject(obj);
 
+            await Task.Delay(1000);
+            var testStart = DateTimeOffset.Now;
+
             // Act
             await context.LogicTransactions.AddAsync(ltr);
             await context.SaveChangesAsync();
+            var testStop = DateTimeOffset.Now;
 
             // Arrange
             var actualLtrObj = await context.LtrObjects.SingleOrDefaultAsync(o => o.ObjectId == newId);
@@ -32,6 +36,12 @@ namespace Climbing.Web.Tests.Unit
             Assert.NotNull(actualLtrObj.Ltr);
             Assert.Equal(actualLtrObj.LtrId, actualLtrObj.Ltr.Id);
             Assert.Equal(actualLtrObj.LtrId, ltr.Id);
+
+            Assert.InRange(actualLtrObj.WhenCreated, testStart, testStop);
+            Assert.InRange(actualLtrObj.WhenChanged, testStart, testStop);
+
+            Assert.All(actualLtrObj.Properties, p => Assert.InRange(p.WhenCreated, testStart, testStop));
+            Assert.All(actualLtrObj.Properties, p => Assert.InRange(p.WhenChanged, testStart, testStop));
         }
     }
 }

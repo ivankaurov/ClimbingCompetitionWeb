@@ -9,6 +9,23 @@ namespace Climbing.Web.Database
 {
     internal static class EntityTypeBuilderExtensions
     {
+        public static EntityTypeBuilder<T> BuildBaseEntityColumns<T>(this ModelBuilder modelBuilder, string tableName)
+            where T : BaseEntity
+        {
+            Guard.NotNull(modelBuilder, nameof(modelBuilder));
+
+            modelBuilder.Entity<T>().BuildKey(tableName);
+            modelBuilder.Entity<T>().Property(e => e.WhenCreated)
+                .IsRequired()
+                .ValueGeneratedOnAdd()
+                .HasValueGenerator<TimeStampValueGenerator>();
+            modelBuilder.Entity<T>().Property(e => e.WhenChanged)
+                .IsRequired()
+                .ValueGeneratedOnAddOrUpdate()
+                .HasValueGenerator<TimeStampValueGenerator>();
+            return modelBuilder.Entity<T>();
+        }
+
         public static void BuildKey<T>(this EntityTypeBuilder<T> builder, string tableName)
             where T : class, IIdentityObject
         {
