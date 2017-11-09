@@ -14,8 +14,8 @@ services:
       update_config:
         parallelism: 1
         delay: 30s
-    environment:
-      - ConnectionStrings__Database=Host=postgres-sql-swarm;Database=ClimbingLocal;Username=postgres;Password=P@ssw0rd;
+    env_file:
+      - ./docker-stack-full.env
 
   postgres-sql-swarm:
     image: postgres:10.0

@@ -22,12 +22,8 @@ namespace Climbing.Web.Portal
             var host = BuildWebHost(args);
 
             Console.WriteLine("Migrating...");
-            using(var scope = host.Services.CreateScope())
-            using (var context = scope.ServiceProvider.GetRequiredService<ClimbingContext>())
-            {
-                context.Database.Migrate();
-                Console.WriteLine("Migration completed");
-            }
+            WaitForMigrations(host.Services).GetAwaiter().GetResult();
+            Console.WriteLine("Migrations completed");
 
             host.Run();
         }
@@ -37,12 +33,13 @@ namespace Climbing.Web.Portal
                 .UseStartup<Startup>()
                 .Build();
 
-        private static async Task Migrate(IServiceProvider serviceProvider)
+        private static async Task WaitForMigrations(IServiceProvider serviceProvider)
         {
             using(var scope = serviceProvider.CreateScope())
             {
-                var helper = scope.ServiceProvider.GetRequiredService<IContextHelper>();
-                await helper.Migrate(CancellationToken.None);
+                var helper = scope.ServiceProvider.GetRequiredService<IMigrationWaitHelper>();
+                var settings = scope.ServiceProvider.GetRequiredService<AppSettings>();
+                await helper.WaitForMigrationsToComplete(settings.MigrationWaitTimeout,settings.MigrationPollInterval, CancellationToken.None);
             }
         }
     }

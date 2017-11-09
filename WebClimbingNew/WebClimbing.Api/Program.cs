@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Climbing.Web.Database;
+using Climbing.Web.Common.Service;
+using System.Threading;
 
 namespace Climbing.Web.Api
 {
@@ -19,12 +21,8 @@ namespace Climbing.Web.Api
         {
             var host = BuildWebHost(args);
             Console.WriteLine("Migrating...");
-            using(var scope = host.Services.CreateScope())
-            using (var context = scope.ServiceProvider.GetRequiredService<ClimbingContext>())
-            {
-                context.Database.Migrate();
-                Console.WriteLine("Migration completed");
-            }
+            WaitForMigrations(host.Services).GetAwaiter().GetResult();
+            Console.WriteLine("Migration completed");
             host.Run();
         }
 
@@ -32,5 +30,15 @@ namespace Climbing.Web.Api
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
+
+        private static async Task WaitForMigrations(IServiceProvider serviceProvider)
+        {
+            using(var scope = serviceProvider.CreateScope())
+            {
+                var helper = scope.ServiceProvider.GetRequiredService<IMigrationWaitHelper>();
+                var settings = scope.ServiceProvider.GetRequiredService<AppSettings>();
+                await helper.WaitForMigrationsToComplete(settings.MigrationWaitTimeout,settings.MigrationPollInterval, CancellationToken.None);
+            }
+        }
     }
 }

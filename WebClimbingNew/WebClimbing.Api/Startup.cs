@@ -20,16 +20,19 @@ namespace Climbing.Web.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            this.Settings = this.Configuration.GetSection("Settings").Get<AppSettings>();
         }
 
         public IConfiguration Configuration { get; }
+        public AppSettings Settings { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCommonServices()
                     .AddCommonDatabaseServices()
-                    .AddDatabase(Configuration.GetConnectionString("Database"))
+                    .AddDatabase(this.Settings.ConnectionString)
+                    .AddSingleton<AppSettings>(_ => this.Settings)
                     .AddMvc();
 
             // Register the Swagger generator, defining one or more Swagger documents
