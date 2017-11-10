@@ -19,7 +19,7 @@ namespace Climbing.Web.Utilities.Mapper
 
         
 
-        public static TTarget Convert<TTarget>(object source) where TTarget : new()
+        public static TTarget Map<TTarget>(this object source) where TTarget : new()
         {
             Guard.NotNull(source, nameof(source));
 
@@ -38,7 +38,7 @@ namespace Climbing.Web.Utilities.Mapper
             return result;
         }
 
-        public static TTarget Map<TSource, TTarget>(TSource source, TTarget target)
+        public static TTarget Map<TSource, TTarget>(this TSource source, TTarget target)
         {
             var key = GetKey<TSource, TTarget>();
             if(!MappingFunctions.ContainsKey(key))

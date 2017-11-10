@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using AutoFixture;
 using AutoFixture.AutoMoq;
@@ -6,7 +7,9 @@ using AutoFixture.Xunit2;
 using Climbing.Web.Common.Service;
 using Climbing.Web.Common.Service.Repository;
 using Climbing.Web.Database;
+using Climbing.Web.Model.Facade;
 using Climbing.Web.Tests.Unit.Utilities;
+using Climbing.Web.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Moq;
@@ -30,6 +33,19 @@ namespace Climbing.Web.Tests.Unit
             fixture.Register<IContextHelper>(() => new SimpleContextHelper());
             fixture.Register<ISeedingHelper>(() => new SimpleSeedingHelper());
 
+            RegisterPagedCollection<TeamFacade>(fixture);
+
+            return fixture;
+        }
+
+        private static Fixture RegisterPagedCollection<T>(Fixture fixture)
+        {
+            fixture.Register<PagedCollection<T>>(() => {
+                var collection = fixture.Create<ICollection<T>>();
+                return new PagedCollection<T>(collection, fixture.Create<int>(), collection.Count);
+            });
+
+            fixture.Register<IPagedCollection<T>>(() => fixture.Create<PagedCollection<T>>());
             return fixture;
         }
     }

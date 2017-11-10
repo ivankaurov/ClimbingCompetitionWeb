@@ -16,7 +16,7 @@ namespace Climbing.Web.Tests.Unit
             AutoMapper.Setup((ClassFrom cf) => $"{cf.field}|{cf.Property}").To((ClassTo ct) => ct.Property2);
 
             // Act
-            var res = AutoMapper.Convert<ClassTo>(from);
+            var res = AutoMapper.Map<ClassTo>(from);
 
             // Assert
             Assert.Equal(from.field, res.fieldTo);
