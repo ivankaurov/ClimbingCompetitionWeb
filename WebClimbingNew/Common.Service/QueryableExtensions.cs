@@ -22,7 +22,11 @@ namespace Climbing.Web.Common.Service
                 return PagedCollection<T>.Empty;
             }
 
-            var totalPages = 1 + (count / paging.PageSize);
+            var totalPages = count / paging.PageSize;
+            if((count % paging.PageSize) > 0)
+            {
+                totalPages++;
+            }
 
             if(skip >= count)
             {

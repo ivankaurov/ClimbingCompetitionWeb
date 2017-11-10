@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.AutoMoq;
 using AutoFixture.Xunit2;
 using Climbing.Web.Common.Service;
+using Climbing.Web.Common.Service.Facade;
 using Climbing.Web.Common.Service.Repository;
 using Climbing.Web.Database;
 using Climbing.Web.Model.Facade;
@@ -27,11 +29,18 @@ namespace Climbing.Web.Tests.Unit
         {
             var fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization());
-            fixture.Register<ClimbingContext>(() => new ClimbingContext(
-                new DbContextOptionsBuilder<ClimbingContext>().UseInMemoryDatabase(DatabaseName).Options));
+            fixture.Register<ClimbingContext>(() =>
+            {
+                var ctx = new ClimbingContext(
+                new DbContextOptionsBuilder<ClimbingContext>().UseInMemoryDatabase(DatabaseName).Options);
+                new ContextSeedingHelper(ctx).Seed();
+                return ctx;
+            });
+            
             fixture.Register<IUnitOfWork>(() => fixture.Create<ClimbingContext>());
             fixture.Register<IContextHelper>(() => new SimpleContextHelper());
             fixture.Register<ISeedingHelper>(() => new SimpleSeedingHelper());
+            fixture.Register<IPageParameters>(() => fixture.Create<PageParameters>());
 
             RegisterPagedCollection<TeamFacade>(fixture);
 

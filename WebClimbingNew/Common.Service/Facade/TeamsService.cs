@@ -54,7 +54,7 @@ namespace Climbing.Web.Common.Service.Facade
             }
 
             var data = await this.unitOfWork.Repository<Team>()
-                            .Where(t => t.ParentId != null)
+                            .Where(t => t.ParentId == parentTeam.Id)
                             .Select(t => new TeamFacade
                                 {
                                     Id = t.Id,
