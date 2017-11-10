@@ -28,7 +28,7 @@ namespace Climbing.Web.Database.EntityBuilderExtensions
 
             modelBuilder.BuildBaseEntityColumns<Team>("teams")
                 .BuildStringProperty(t => t.Name, 255, columnName: "name", nullable: false);
-            modelBuilder.Entity<Team>().BuildStringProperty(t => t.Code, 32, false, "local_code", false);
+            modelBuilder.Entity<Team>().BuildStringProperty(t => t.Code, 32, false, "code", false);
             modelBuilder.Entity<Team>().Property(t => t.ParentId).HasColumnName("parent_team_id").IsRequired(false);
             modelBuilder.Entity<Team>()
                 .HasOne(t => t.Parent)
@@ -37,7 +37,7 @@ namespace Climbing.Web.Database.EntityBuilderExtensions
                 .IsRequired(false);
             
             modelBuilder.Entity<Team>().HasIndex(t => new { t.Name, t.ParentId }).IsUnique();
-            modelBuilder.Entity<Team>().HasIndex(t => new { t.Code, t.ParentId }).IsUnique();
+            modelBuilder.Entity<Team>().HasIndex(t => new { t.Code }).IsUnique();
 
             return modelBuilder;
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Climbing.Web.Common.Service.Repository;
 using Climbing.Web.Database;
 using Climbing.Web.Model.Logging;
 using Climbing.Web.Tests.Unit.Utilities;
@@ -13,7 +14,7 @@ namespace Climbing.Web.Tests.Unit
     {
         [Theory]
         [AutoMoqData]
-        public async Task ShouldSaveNewObject(ClimbingContext context, TestIdentityObject obj, Guid newId)
+        public async Task ShouldSaveNewObject(IUnitOfWork context, TestIdentityObject obj, Guid newId)
         {
             // Arrange
             obj.SetProperty(o => o.Id, newId);
@@ -24,12 +25,12 @@ namespace Climbing.Web.Tests.Unit
             var testStart = DateTimeOffset.Now;
 
             // Act
-            await context.LogicTransactions.AddAsync(ltr);
+            await context.Repository<Ltr>().AddAsync(ltr);
             await context.SaveChangesAsync();
             var testStop = DateTimeOffset.Now;
 
             // Arrange
-            var actualLtrObj = await context.LtrObjects.SingleOrDefaultAsync(o => o.ObjectId == newId);
+            var actualLtrObj = await context.Repository<LtrObject>().SingleOrDefaultAsync(o => o.ObjectId == newId);
             Assert.NotNull(actualLtrObj);
             Assert.Equal(ChangeType.New, actualLtrObj.ChangeType);
             Assert.NotEmpty(actualLtrObj.Properties);

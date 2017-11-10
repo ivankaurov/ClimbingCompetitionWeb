@@ -5,6 +5,10 @@ namespace Climbing.Web.Model
 {
     public class Team : BaseEntity
     {
+        public const string RootTeamCode = "";
+
+        public const string RootTeamName = "Россия";
+        
         public string Name { get; set; }
 
         public string Code { get; set; }

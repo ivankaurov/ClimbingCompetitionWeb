@@ -12,7 +12,7 @@ using System;
 namespace Database.Postgres.Migrations
 {
     [DbContext(typeof(ClimbingContext))]
-    [Migration("20171109221437_InitialCreate")]
+    [Migration("20171110173835_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,7 +155,7 @@ namespace Database.Postgres.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnName("local_code")
+                        .HasColumnName("code")
                         .HasMaxLength(32)
                         .IsUnicode(false);
 
@@ -177,10 +177,10 @@ namespace Database.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("Code", "ParentId")
+                    b.HasIndex("Code")
                         .IsUnique();
+
+                    b.HasIndex("ParentId");
 
                     b.HasIndex("Name", "ParentId")
                         .IsUnique();

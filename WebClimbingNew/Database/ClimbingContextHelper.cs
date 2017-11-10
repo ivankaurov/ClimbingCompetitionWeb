@@ -26,41 +26,14 @@ namespace Climbing.Web.Database
 
         public async Task<bool> IsMigrated(CancellationToken cancellationToken)
         {
+            this.logger.LogTrace(nameof(this.IsMigrated) + ": Enter");
+
             var hasMigrations = (await this.context.Database.GetPendingMigrationsAsync(cancellationToken)).Any();
-            if(hasMigrations)
-            {
-                return false;
-            }
-
-            return await this.IsSeeded(cancellationToken);
+            
+            this.logger.LogInformation(nameof(this.IsMigrated) + ": Exit {0}", hasMigrations);
+            return hasMigrations;
         }
 
-        public async Task Migrate(CancellationToken cancellationToken)
-        {
-            await this.context.Database.MigrateAsync(cancellationToken);
-            if(!(await this.IsSeeded(cancellationToken)))
-            {
-                try
-                {
-                    await this.Seed(cancellationToken);
-                }
-                catch(Exception ex)
-                {
-                    this.logger.LogError(ex, "Seeding failed. {0}", ex.Message);
-                    throw;
-                }
-            }
-        }
-
-        private async Task<bool> IsSeeded(CancellationToken cancellationToken) =>
-            await this.context.Teams.AnyAsync(t => t.Code == ClimbingContext.RootTeamCode && t.ParentId == null);
-
-        private async Task Seed(CancellationToken cancellationToken)
-        {
-            await this.context.Teams.AddAsync(
-                new Team { Name = "Россия", Code = ClimbingContext.RootTeamCode, ParentId = null },
-                cancellationToken);
-            await this.context.SaveChangesAsync(cancellationToken);
-        }
+        public async Task Migrate(CancellationToken cancellationToken) => await this.context.Database.MigrateAsync(cancellationToken);
     }
 }

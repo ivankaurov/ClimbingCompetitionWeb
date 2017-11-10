@@ -3,6 +3,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Climbing.Web.Common.Service;
+using Climbing.Web.Common.Service.Repository;
 using Climbing.Web.Database;
 using Climbing.Web.Database.Postgres;
 using Microsoft.Extensions.Configuration;
@@ -62,7 +63,11 @@ namespace Climbing.Web.MigratorService
             logger.LogInformation("Starting migration");
 
             await migrationHelper.Migrate(CancellationToken.None);
-            logger.LogInformation("Database has the latest version.");
+            logger.LogInformation("Database has the latest version. Starting seeding.");
+
+            var seeder = serviceProvider.GetRequiredService<ISeedingHelper>();
+            await seeder.Seed();
+            logger.LogInformation("Seeding completed.");
         }
 
         private static void LoadSettings()

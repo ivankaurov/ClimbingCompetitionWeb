@@ -8,32 +8,15 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Climbing.Web.Common.Service.Repository;
 
 namespace Climbing.Web.Database
 {
-    public class ClimbingContext : DbContext
+    public class ClimbingContext : DbContext, IUnitOfWork
     {
-        internal const string RootTeamCode = "";
-
-        private readonly Lazy<Team> rootTeam;
-
         public ClimbingContext(DbContextOptions<ClimbingContext> options) : base(options)
         {
-            this.rootTeam = new Lazy<Team>(
-                () => this.Teams.SingleAsync(t => t.ParentId == null && t.Code == RootTeamCode).GetAwaiter().GetResult(),
-                LazyThreadSafetyMode.PublicationOnly);
         }
-
-        public DbSet<Ltr> LogicTransactions { get; set; }
-
-        public DbSet<LtrObject> LtrObjects { get; set; }
-        public DbSet<LtrObjectProperties> LtrObjectProperties { get; set; }
-
-        public DbSet<Team> Teams { get; set; }
-
-        public DbSet<Person> People { get; set; }
-
-        public Team RootTeam => this.rootTeam.Value;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,25 +26,6 @@ namespace Climbing.Web.Database
                         .MapPersonEntity()
                         .MapTeamEntity();
             base.OnModelCreating(modelBuilder);
-        }
-
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        {
-            ChangeTracker.DetectChanges();
-
-            foreach(var entry in ChangeTracker.Entries()
-                            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
-                            .Select(e => e.Entity)
-                            .OfType<BaseEntity>())
-            {
-                entry.SetProperty(e => e.WhenChanged, DateTimeOffset.UtcNow);
-            }
-
-            ChangeTracker.AutoDetectChangesEnabled = false;
-            var result = base.SaveChanges(acceptAllChangesOnSuccess);
-            ChangeTracker.AutoDetectChangesEnabled = true;
-
-            return result;
         }
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
@@ -82,6 +46,8 @@ namespace Climbing.Web.Database
 
             return result;
         }
+
+        public DbSet<T> Repository<T>() where T : class => this.Set<T>();
     }
 
 }

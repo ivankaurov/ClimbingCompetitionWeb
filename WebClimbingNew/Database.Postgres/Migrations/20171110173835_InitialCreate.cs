@@ -43,7 +43,7 @@ namespace Database.Postgres.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    local_code = table.Column<string>(type: "varchar(32)", unicode: false, maxLength: 32, nullable: false),
+                    code = table.Column<string>(type: "varchar(32)", unicode: false, maxLength: 32, nullable: false),
                     name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     parent_team_id = table.Column<Guid>(type: "uuid", nullable: true),
                     when_changed = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false),
@@ -124,15 +124,15 @@ namespace Database.Postgres.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_teams_code",
+                table: "teams",
+                column: "code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_teams_parent_team_id",
                 table: "teams",
                 column: "parent_team_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_teams_local_code_parent_team_id",
-                table: "teams",
-                columns: new[] { "local_code", "parent_team_id" },
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_teams_name_parent_team_id",

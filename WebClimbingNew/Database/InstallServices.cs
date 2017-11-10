@@ -1,4 +1,5 @@
 using Climbing.Web.Common.Service;
+using Climbing.Web.Common.Service.Repository;
 using Climbing.Web.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,8 @@ namespace Climbing.Web.Database
         {
             Guard.NotNull(serviceCollection, nameof(serviceCollection));
 
-            serviceCollection.AddScoped<IContextHelper, ClimbingContextHelper>();
+            serviceCollection.AddScoped<IContextHelper, ClimbingContextHelper>()
+                             .AddScoped<IUnitOfWork>(s => s.GetRequiredService<ClimbingContext>());
             return serviceCollection;
         }
     }

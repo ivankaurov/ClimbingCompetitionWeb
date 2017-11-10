@@ -154,7 +154,7 @@ namespace Database.Postgres.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnName("local_code")
+                        .HasColumnName("code")
                         .HasMaxLength(32)
                         .IsUnicode(false);
 
@@ -176,10 +176,10 @@ namespace Database.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("Code", "ParentId")
+                    b.HasIndex("Code")
                         .IsUnique();
+
+                    b.HasIndex("ParentId");
 
                     b.HasIndex("Name", "ParentId")
                         .IsUnique();
