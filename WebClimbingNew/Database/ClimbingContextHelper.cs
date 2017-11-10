@@ -28,10 +28,10 @@ namespace Climbing.Web.Database
         {
             this.logger.LogTrace(nameof(this.IsMigrated) + ": Enter");
 
-            var hasMigrations = (await this.context.Database.GetPendingMigrationsAsync(cancellationToken)).Any();
+            var result = !(await this.context.Database.GetPendingMigrationsAsync(cancellationToken)).Any();
             
-            this.logger.LogInformation(nameof(this.IsMigrated) + ": Exit {0}", hasMigrations);
-            return hasMigrations;
+            this.logger.LogInformation(nameof(this.IsMigrated) + ": Exit {0}", result);
+            return result;
         }
 
         public async Task Migrate(CancellationToken cancellationToken) => await this.context.Database.MigrateAsync(cancellationToken);

@@ -24,7 +24,7 @@ namespace Climbing.Web.Api.Controllers
             return this.Ok(response);
         }
 
-        [HttpGet("{parent}")]
+        [HttpGet("{parent}/children")]
         public async Task<IActionResult> Get(string parent, [FromQuery] PageParameters pageParameters)
         {
             try
@@ -36,6 +36,18 @@ namespace Climbing.Web.Api.Controllers
             {
                 return this.NotFound(parent);
             }
+        }
+
+        [HttpGet("root")]
+        public async Task<IActionResult> Get()
+        {
+            return await Task.FromResult(this.NotFound());
+        }
+
+        [HttpGet("{code}")]
+        public async Task<IActionResult> Get(string code)
+        {
+            return await Task.FromResult(this.NotFound());
         }
     }
 }
