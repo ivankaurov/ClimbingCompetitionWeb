@@ -9,5 +9,7 @@ namespace Climbing.Web.Utilities
         int PageNumber { get; }
 
         int TotalPages { get; }
+
+        int PageSize { get; }
     }
 }

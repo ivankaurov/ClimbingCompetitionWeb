@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using Climbing.Web.Api.Model;
+using Climbing.Web.Api.Utilites;
 using Climbing.Web.Common.Service.Exceptions;
 using Climbing.Web.Common.Service.Facade;
 using Climbing.Web.Utilities;
@@ -9,28 +11,35 @@ namespace Climbing.Web.Api.Controllers
     [Route("api/teams")]
     public class TeamsController : Controller
     {
-        private readonly ITeamsService teamsService;
+        internal const string GetRootTeamsRouteName = "GetRootChildrenTeams";
 
-        public TeamsController(ITeamsService teamsService)
+        internal const string GetChildTeamsRouteName = "GetChildTeams";
+
+        private readonly ITeamsService teamsService;
+        private readonly IUrlHelper urlHelper;
+
+        public TeamsController(ITeamsService teamsService, IUrlHelper urlHelper)
         {
             Guard.NotNull(teamsService, nameof(teamsService));
+            Guard.NotNull(urlHelper, nameof(urlHelper));
             this.teamsService = teamsService;
+            this.urlHelper = urlHelper;
         }
 
-        [HttpGet()]
+        [HttpGet(Name = GetRootTeamsRouteName)]
         public async Task<IActionResult> Get([FromQuery] PageParameters pageParameters)
         {
             var response = await this.teamsService.GetTeams(pageParameters);
-            return this.Ok(response);
+            return this.Ok(response.ToPagedResult(this.urlHelper, GetRootTeamsRouteName));
         }
 
-        [HttpGet("{parent}/children")]
+        [HttpGet("{parent}/children", Name = GetChildTeamsRouteName)]
         public async Task<IActionResult> Get(string parent, [FromQuery] PageParameters pageParameters)
         {
             try
             {
                 var response = await this.teamsService.GetTeams(parent, pageParameters);
-                return this.Ok(response);
+                return this.Ok(response.ToPagedResult(this.urlHelper, GetChildTeamsRouteName));
             }
             catch(ObjectNotFoundException)
             {

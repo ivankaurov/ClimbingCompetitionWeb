@@ -19,7 +19,7 @@ namespace Climbing.Web.Common.Service
 
             if(count == 0)
             {
-                return PagedCollection<T>.Empty;
+                return PagedCollection<T>.Empty(paging.PageSize);
             }
 
             var totalPages = count / paging.PageSize;
@@ -30,11 +30,11 @@ namespace Climbing.Web.Common.Service
 
             if(skip >= count)
             {
-                return new PagedCollection<T>(new T[0], totalPages + 1, totalPages);
+                return new PagedCollection<T>(new T[0], totalPages + 1, totalPages, paging.PageSize);
             }
 
             var result = await query.Skip(skip).Take(paging.PageSize).ToListAsync(cancellationToken);
-            return new PagedCollection<T>(result, paging.PageNumber, totalPages);
+            return new PagedCollection<T>(result, paging.PageNumber, totalPages, paging.PageSize);
         }
     }
 }

@@ -43,6 +43,7 @@ namespace Climbing.Web.Tests.Unit
             Assert.Empty(actual);
             Assert.Equal(0, actual.PageNumber);
             Assert.Equal(0, actual.TotalPages);
+            Assert.Equal(pageParameters.PageSize, actual.PageSize);
         }
 
         [Theory]
@@ -63,6 +64,7 @@ namespace Climbing.Web.Tests.Unit
             Assert.All(zip, z => Assert.Equal($"Team_{z.Expcted:00}", z.Actual.Name));
             Assert.Equal(pageParameters.PageNumber, actual.PageNumber);
             Assert.Equal(4, actual.TotalPages);
+            Assert.Equal(pageParameters.PageSize, actual.PageSize);
         }
 
         [Theory]
@@ -80,6 +82,7 @@ namespace Climbing.Web.Tests.Unit
             Assert.Equal(2, actual.Page.Count);
             Assert.Equal(pageParameters.PageNumber, actual.PageNumber);
             Assert.Equal(4, actual.TotalPages);
+            Assert.Equal(pageParameters.PageSize, actual.PageSize);
         }
 
         [Theory]
@@ -97,6 +100,7 @@ namespace Climbing.Web.Tests.Unit
             Assert.Empty(actual);
             Assert.Equal(2, actual.PageNumber);
             Assert.Equal(1, actual.TotalPages);
+            Assert.Equal(pageParameters.PageSize, actual.PageSize);
         }
     }
 }

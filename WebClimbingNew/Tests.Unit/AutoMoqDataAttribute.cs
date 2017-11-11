@@ -21,6 +21,9 @@ namespace Climbing.Web.Tests.Unit
     internal sealed class AutoMoqDataAttribute : AutoDataAttribute
     {
         private static readonly string DatabaseName = $"Database_{Guid.NewGuid()}";
+
+        private static readonly Random Rnd = new Random();
+
         public AutoMoqDataAttribute() : base(CreateFixture)
         {
         }
@@ -51,7 +54,15 @@ namespace Climbing.Web.Tests.Unit
         {
             fixture.Register<PagedCollection<T>>(() => {
                 var collection = fixture.Create<ICollection<T>>();
-                return new PagedCollection<T>(collection, fixture.Create<int>(), collection.Count);
+                var pageSize = Rnd.Next(1, collection.Count + 1);
+                var totalPages = collection.Count / pageSize;
+                if(collection.Count % pageSize > 0)
+                {
+                    totalPages++;
+                }
+
+                var currentPage = Rnd.Next(1, totalPages + 1);
+                return new PagedCollection<T>(collection, currentPage, totalPages, pageSize);
             });
 
             fixture.Register<IPagedCollection<T>>(() => fixture.Create<PagedCollection<T>>());

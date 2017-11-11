@@ -7,6 +7,9 @@ using Climbing.Web.Database;
 using Climbing.Web.Database.Postgres;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -33,6 +36,8 @@ namespace Climbing.Web.Api
                     .AddCommonDatabaseServices()
                     .AddDatabase(this.Settings.ConnectionString)
                     .AddSingleton<AppSettings>(_ => this.Settings)
+                    .AddScoped<IUrlHelper>(s => new UrlHelper(s.GetRequiredService<IActionContextAccessor>().ActionContext))
+                    .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
                     .AddMvc();
 
             // Register the Swagger generator, defining one or more Swagger documents
