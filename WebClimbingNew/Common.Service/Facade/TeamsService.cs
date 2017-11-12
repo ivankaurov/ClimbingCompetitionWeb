@@ -18,13 +18,6 @@ namespace Climbing.Web.Common.Service.Facade
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogger<TeamsService> logger;
 
-        static TeamsService()
-        {
-            AutoMapper.Setup((Team t) => t.Id).To((TeamFacade f) => f.Id);
-            AutoMapper.Setup((Team t) => t.Code).To((TeamFacade f) => f.Code);
-            AutoMapper.Setup((Team t) => t.Name).To((TeamFacade f) => f.Name);
-        }
-
         public TeamsService(IUnitOfWork unitOfWork, ILogger<TeamsService> logger)
         {
             Guard.NotNull(unitOfWork, nameof(unitOfWork));
