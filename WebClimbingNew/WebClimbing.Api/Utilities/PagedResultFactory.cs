@@ -25,7 +25,7 @@ namespace Climbing.Web.Api.Utilites
             if(pagedCollection.PageNumber < pagedCollection.TotalPages)
             {
                 result.AddLink(
-                    LinkType.PreviousPage,
+                    LinkType.NextPage,
                     urlHelper.Link(getRouteName, new PageParameters { PageNumber = pagedCollection.PageNumber + 1, PageSize = pagedCollection.PageSize }),
                     "GET");
             }
