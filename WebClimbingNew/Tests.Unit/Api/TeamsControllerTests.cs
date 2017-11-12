@@ -30,7 +30,6 @@ namespace Climbing.Web.Tests.Unit.Api
             var okactionRsult = Assert.IsType<OkObjectResult>(actionResult);
             var actual = Assert.IsAssignableFrom<PagedResult<TeamFacade>>(okactionRsult.Value);
             Assert.Equal(expectedResult, actual);
-            urlHelper.Verify(s => s.Link(TeamsController.GetRootTeamsRouteName, It.IsAny<object>()), Times.Exactly(actual.Links.Count));
         }
 
         [Theory]
@@ -52,7 +51,6 @@ namespace Climbing.Web.Tests.Unit.Api
 
             // Should not create links
             Assert.Empty(actual.Links);
-            urlHelper.Verify(s => s.Link(TeamsController.GetRootTeamsRouteName, It.IsAny<object>()), Times.Never);
         }
 
         [Theory]
@@ -70,8 +68,6 @@ namespace Climbing.Web.Tests.Unit.Api
             var okactionRsult = Assert.IsType<OkObjectResult>(actionResult);
             var actual = Assert.IsAssignableFrom<PagedResult<TeamFacade>>(okactionRsult.Value);
             Assert.Equal(expectedResult, actual);
-
-            urlHelper.Verify(s => s.Link(TeamsController.GetChildTeamsRouteName, It.IsAny<object>()), Times.Exactly(actual.Links.Count));
         }
 
         [Theory]
@@ -93,7 +89,6 @@ namespace Climbing.Web.Tests.Unit.Api
 
             // Should not create links
             Assert.Empty(actual.Links);
-            urlHelper.Verify(s => s.Link(TeamsController.GetChildTeamsRouteName, It.IsAny<object>()), Times.Never);
         }
 
         [Theory]
