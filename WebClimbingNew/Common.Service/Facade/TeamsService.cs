@@ -26,17 +26,36 @@ namespace Climbing.Web.Common.Service.Facade
             this.unitOfWork = unitOfWork;
             this.logger = logger;
         }
+
+        public Task<TeamFacade> GetRootTeam(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return this.GetTeam(Team.RootTeamCode, cancellationToken);
+        }
+
+        public async Task<TeamFacade> GetTeam(string teamCode, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Guard.NotNull(teamCode, nameof(teamCode));
+
+            var team = await this.unitOfWork.Repository<Team>().FirstOrDefaultAsync(t => t.Code == teamCode);
+
+            return team==null
+                ? null
+                : new TeamFacade
+                    {
+                        Code=team.Code,
+                        Id=team.Id,
+                        Name = team.Name,
+                    };
+        }
+
         public Task<IPagedCollection<TeamFacade>> GetTeams(IPageParameters paging, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.GetTeams(null, paging, cancellationToken);
+            return this.GetTeams(Team.RootTeamCode, paging, cancellationToken);
         }
 
         public async Task<IPagedCollection<TeamFacade>> GetTeams(string parentTeamCode, IPageParameters paging, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if(string.IsNullOrWhiteSpace(parentTeamCode))
-            {
-                parentTeamCode = Team.RootTeamCode;
-            }
+            Guard.NotNull(parentTeamCode, nameof(parentTeamCode));
 
             Guard.NotNull(paging, nameof(paging));
 

@@ -11,5 +11,9 @@ namespace Climbing.Web.Common.Service.Facade
         Task<IPagedCollection<TeamFacade>> GetTeams(IPageParameters paging, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<IPagedCollection<TeamFacade>> GetTeams(string parentTeamCode, IPageParameters paging, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<TeamFacade> GetTeam(string teamCode, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<TeamFacade> GetRootTeam(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

@@ -106,5 +106,71 @@ namespace Climbing.Web.Tests.Unit.Api
             var nfr = Assert.IsType<NotFoundObjectResult>(actionResult);
             Assert.Equal(parent, nfr.Value as string);
         }
+
+        [Theory]
+        [AutoMoqData]
+        public async Task ShouldReturnTeamByCode(Mock<ITeamsService> teamsService, string code, TeamFacade expected, Mock<IUrlHelper> urlHelper)
+        {
+            // Arrange
+            teamsService.Setup(s => s.GetTeam(code, It.IsAny<CancellationToken>())).ReturnsAsync(expected);
+            var sut = new TeamsController(teamsService.Object, urlHelper.Object);
+
+            // Act
+            var res = await sut.Get(code);
+
+            // Assert
+            var okRes = Assert.IsType<OkObjectResult>(res);
+            var actRes = Assert.IsType<TeamFacade>(okRes.Value);
+            Assert.Equal(expected, actRes);
+        }
+
+        [Theory]
+        [AutoMoqData]
+        public async Task ShouldReturnRootTeam(Mock<ITeamsService> teamsService, TeamFacade expected, Mock<IUrlHelper> urlHelper)
+        {
+            // Arrange
+            teamsService.Setup(s => s.GetRootTeam(It.IsAny<CancellationToken>())).ReturnsAsync(expected);
+            var sut = new TeamsController(teamsService.Object, urlHelper.Object);
+
+            // Act
+            var res = await sut.Get();
+
+            // Assert
+            var okRes = Assert.IsType<OkObjectResult>(res);
+            var actRes = Assert.IsType<TeamFacade>(okRes.Value);
+            Assert.Equal(expected, actRes);
+        }
+
+        [Theory]
+        [AutoMoqData]
+        public async Task ShouldReturn404OnMissingRoot(Mock<ITeamsService> teamsService, Mock<IUrlHelper> urlHelper)
+        {
+            // Arrange
+            teamsService.Setup(s => s.GetRootTeam(It.IsAny<CancellationToken>())).ReturnsAsync((TeamFacade)null);
+            var sut = new TeamsController(teamsService.Object, urlHelper.Object);
+
+            // Act
+            var res = await sut.Get();
+
+            // Assert
+            Assert.IsType<NotFoundResult>(res);
+        }
+
+        [Theory]
+        [AutoMoqData]
+        public async Task ShouldReturn404OnIncorrectCode(Mock<ITeamsService> teamsService, string code, Mock<IUrlHelper> urlHelper)
+        {
+            // Arrange
+            teamsService.Setup(s => s.GetRootTeam(It.IsAny<CancellationToken>())).ReturnsAsync((TeamFacade)null);
+            var sut = new TeamsController(teamsService.Object, urlHelper.Object);
+
+            // Act
+            var res = await sut.Get(code);
+
+            // Assert
+            var nfr = Assert.IsType<NotFoundObjectResult>(res);
+            var act = Assert.IsType<string>(nfr.Value);
+            Assert.Equal(act, code);
+        }
     }
 }

@@ -50,13 +50,25 @@ namespace Climbing.Web.Api.Controllers
         [HttpGet("root")]
         public async Task<IActionResult> Get()
         {
-            return await Task.FromResult(this.NotFound());
+            var team = await this.teamsService.GetRootTeam();
+            if(team == null)
+            {
+                return this.NotFound();
+            }
+            
+            return this.Ok(team);
         }
 
         [HttpGet("{code}")]
         public async Task<IActionResult> Get(string code)
         {
-            return await Task.FromResult(this.NotFound());
+            var team = await this.teamsService.GetTeam(code);
+            if(team == null)
+            {
+                return this.NotFound(code);
+            }
+            
+            return this.Ok(team);
         }
     }
 }
