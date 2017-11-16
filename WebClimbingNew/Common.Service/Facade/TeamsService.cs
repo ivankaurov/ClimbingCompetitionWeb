@@ -27,6 +27,35 @@ namespace Climbing.Web.Common.Service.Facade
             this.logger = logger;
         }
 
+        public async Task<TeamFacade> CreateTeam(string parentTeamCode, TeamFacade team, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Guard.NotNull(parentTeamCode, nameof(parentTeamCode));
+
+            var parentTeam = await this.unitOfWork.Repository<Team>().FirstOrDefaultAsync(t => t.Code == parentTeamCode);
+            if(parentTeam == null)
+            {
+                throw new ObjectNotFoundException($"Can't find team {parentTeamCode}");
+            }
+
+            var entity = new Team {
+                Name = team.Name,
+                Code = string.IsNullOrWhiteSpace(team.Code)
+                        ? (await this.GenerateNextTeamCode(parentTeam, cancellationToken))
+                        : team.Code,
+                ParentId = parentTeam.Id,
+            };
+
+            var newE = await this.unitOfWork.Repository<Team>().AddAsync(entity, cancellationToken);
+
+            await this.unitOfWork.SaveChangesAsync(cancellationToken);
+            return new TeamFacade
+            {
+                Name = newE.Entity.Name,
+                Code = newE.Entity.Code,
+                Id = newE.Entity.Id,
+            };
+        }
+
         public Task<TeamFacade> GetRootTeam(CancellationToken cancellationToken = default(CancellationToken))
         {
             return this.GetTeam(Team.RootTeamCode, cancellationToken);
@@ -76,6 +105,23 @@ namespace Climbing.Web.Common.Service.Facade
                             .OrderBy(f => f.Code)
                             .ApplyPaging(paging, cancellationToken);
             return data;
+        }
+
+        private async Task<string> GenerateNextTeamCode(Team parentTeam, CancellationToken cancellationToken)
+        {
+            var childTeam = await this.unitOfWork.Repository<Team>()
+                .Where(t => t.ParentId == parentTeam.Id)
+                .OrderByDescending(t => t.Code)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            var currentLocalCode = 0;
+            string currentCode;
+            do
+            {
+                currentCode = $"{parentTeam.Code}{++currentLocalCode:00}";
+            }
+            while(await this.unitOfWork.Repository<Team>().AnyAsync(t => t.Code == currentCode, cancellationToken));
+            return currentCode;
         }
     }
 }

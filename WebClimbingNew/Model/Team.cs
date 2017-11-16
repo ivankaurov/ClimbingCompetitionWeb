@@ -17,6 +17,6 @@ namespace Climbing.Web.Model
 
         public Team Parent { get; set; }
 
-        public ICollection<Team> Children { get; set; }
+        public ICollection<Team> Children { get; set; } = new List<Team>();
     }
 }

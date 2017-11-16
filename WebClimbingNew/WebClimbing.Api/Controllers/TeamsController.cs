@@ -43,7 +43,7 @@ namespace Climbing.Web.Api.Controllers
             }
             catch(ObjectNotFoundException)
             {
-                return this.NotFound(parent);
+                return this.NotFound();
             }
         }
 
@@ -65,7 +65,7 @@ namespace Climbing.Web.Api.Controllers
             var team = await this.teamsService.GetTeam(code);
             if(team == null)
             {
-                return this.NotFound(code);
+                return this.NotFound();
             }
             
             return this.Ok(team);

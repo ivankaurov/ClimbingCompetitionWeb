@@ -29,7 +29,7 @@ namespace Climbing.Web.Tests.Unit.Api
             // Assert
             var okactionRsult = Assert.IsType<OkObjectResult>(actionResult);
             var actual = Assert.IsAssignableFrom<PagedResult<TeamFacade>>(okactionRsult.Value);
-            Assert.Equal(expectedResult, actual);
+            Assert.Equal(expectedResult, actual.Data);
         }
 
         [Theory]
@@ -47,7 +47,7 @@ namespace Climbing.Web.Tests.Unit.Api
             // Assert
             var okactionRsult = Assert.IsType<OkObjectResult>(actionResult);
             var actual = Assert.IsAssignableFrom<PagedResult<TeamFacade>>(okactionRsult.Value);
-            Assert.Empty(actual);
+            Assert.Empty(actual.Data);
 
             // Should not create links
             Assert.Empty(actual.Links);
@@ -67,7 +67,7 @@ namespace Climbing.Web.Tests.Unit.Api
             // Assert
             var okactionRsult = Assert.IsType<OkObjectResult>(actionResult);
             var actual = Assert.IsAssignableFrom<PagedResult<TeamFacade>>(okactionRsult.Value);
-            Assert.Equal(expectedResult, actual);
+            Assert.Equal(expectedResult, actual.Data);
         }
 
         [Theory]
@@ -85,7 +85,7 @@ namespace Climbing.Web.Tests.Unit.Api
             // Assert
             var okactionRsult = Assert.IsType<OkObjectResult>(actionResult);
             var actual = Assert.IsAssignableFrom<PagedResult<TeamFacade>>(okactionRsult.Value);
-            Assert.Empty(actual);
+            Assert.Empty(actual.Data);
 
             // Should not create links
             Assert.Empty(actual.Links);
@@ -103,8 +103,7 @@ namespace Climbing.Web.Tests.Unit.Api
             var actionResult = await sut.Get(parent, paging);
 
             // Assert
-            var nfr = Assert.IsType<NotFoundObjectResult>(actionResult);
-            Assert.Equal(parent, nfr.Value as string);
+            Assert.IsType<NotFoundResult>(actionResult);
         }
 
         [Theory]
@@ -168,9 +167,39 @@ namespace Climbing.Web.Tests.Unit.Api
             var res = await sut.Get(code);
 
             // Assert
-            var nfr = Assert.IsType<NotFoundObjectResult>(res);
-            var act = Assert.IsType<string>(nfr.Value);
-            Assert.Equal(act, code);
+            Assert.IsType<NotFoundResult>(res);
+        }
+
+        [Theory]
+        [AutoMoqData]
+        public async Task ShouldReturnPageLinks(Mock<ITeamsService> teamsService, string code, Mock<IUrlHelper> urlHelper, TeamFacade value)
+        {
+            // Arrange
+            var pageParams = new PageParameters{ PageNumber = 2, PageSize = 1 };
+            urlHelper.Setup(
+                u => u.Link(
+                    It.IsAny<string>(),
+                    It.Is<PageParameters>(p => p.PageNumber == pageParams.PageNumber - 1 && p.PageSize == pageParams.PageSize)))
+                    .Returns("PREV");
+            urlHelper.Setup(
+                u => u.Link(
+                    It.IsAny<string>(),
+                    It.Is<PageParameters>(p => p.PageNumber == pageParams.PageNumber + 1 && p.PageSize == pageParams.PageSize)))
+                    .Returns("NEXT");
+            var pagedCollection = new PagedCollection<TeamFacade>(new [] { value }, pageParams.PageNumber, 3, pageParams.PageSize);
+            teamsService.Setup(s => s.GetTeams(code, pageParams, It.IsAny<CancellationToken>())).ReturnsAsync(pagedCollection);
+            var sut = new TeamsController(teamsService.Object, urlHelper.Object);
+
+            // Act
+            var ores = await sut.Get(code, pageParams);
+
+            // Assert
+            var okres = Assert.IsType<OkObjectResult>(ores);
+            var actual = Assert.IsType<PagedResult<TeamFacade>>(okres.Value);
+            Assert.True(actual.Links.ContainsKey(LinkType.PreviousPage));
+            Assert.True(actual.Links.ContainsKey(LinkType.NextPage));
+            Assert.Equal("NEXT", actual.Links[LinkType.NextPage].Href);
+            Assert.Equal("PREV", actual.Links[LinkType.PreviousPage].Href);
         }
     }
 }

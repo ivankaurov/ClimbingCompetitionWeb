@@ -9,5 +9,7 @@ namespace Climbing.Web.Common.Service
         public TimeSpan MigrationWaitTimeout { get; set; }
 
         public TimeSpan MigrationPollInterval { get; set; }
+
+        public bool MigrateByApi { get; set; }
     }
 }

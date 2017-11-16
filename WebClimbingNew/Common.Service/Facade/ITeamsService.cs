@@ -15,5 +15,7 @@ namespace Climbing.Web.Common.Service.Facade
         Task<TeamFacade> GetTeam(string teamCode, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<TeamFacade> GetRootTeam(CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<TeamFacade> CreateTeam(string parentTeamCode, TeamFacade team, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

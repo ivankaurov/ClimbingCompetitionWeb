@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Climbing.Web.Api.Model
 {
-    public class PagedResult<T> : LinkedResultBase, IEnumerable<T>
+    public class PagedResult<T> : LinkedResultBase
     {
         public PagedResult(IEnumerable<T> data)
         {
@@ -14,9 +14,5 @@ namespace Climbing.Web.Api.Model
         }
 
         public ICollection<T> Data { get; }
-
-        public IEnumerator<T> GetEnumerator() => this.Data.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
     }
 }

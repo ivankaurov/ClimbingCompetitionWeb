@@ -35,9 +35,17 @@ namespace Climbing.Web.Api
         {
             using(var scope = serviceProvider.CreateScope())
             {
-                var helper = scope.ServiceProvider.GetRequiredService<IMigrationWaitHelper>();
                 var settings = scope.ServiceProvider.GetRequiredService<AppSettings>();
-                await helper.WaitForMigrationsToComplete(settings.MigrationWaitTimeout,settings.MigrationPollInterval, CancellationToken.None);
+                if(settings.MigrateByApi)
+                {
+                    var migrator = scope.ServiceProvider.GetRequiredService<IContextHelper>();
+                    await migrator.Migrate(CancellationToken.None);
+                }
+                else
+                {
+                    var helper = scope.ServiceProvider.GetRequiredService<IMigrationWaitHelper>();
+                    await helper.WaitForMigrationsToComplete(settings.MigrationWaitTimeout,settings.MigrationPollInterval, CancellationToken.None);
+                }
             }
         }
     }
