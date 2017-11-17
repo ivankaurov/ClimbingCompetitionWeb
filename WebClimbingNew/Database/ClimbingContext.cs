@@ -48,6 +48,18 @@ namespace Climbing.Web.Database
         }
 
         public DbSet<T> Repository<T>() where T : class => this.Set<T>();
+
+        public async Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var contextTransaction = await this.Database.BeginTransactionAsync(cancellationToken);
+            return new ContextTransaction(contextTransaction);
+        }
+
+        public ITransaction BeginTransaction()
+        {
+            var innerTransaction = this.Database.BeginTransaction();
+            return new ContextTransaction(innerTransaction);
+        }
     }
 
 }
