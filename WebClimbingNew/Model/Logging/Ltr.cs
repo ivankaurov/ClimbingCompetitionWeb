@@ -5,6 +5,7 @@ using Climbing.Web.Utilities;
 
 namespace Climbing.Web.Model.Logging
 {
+    [SerializeSkip]
     public class Ltr : BaseEntity
     {
         public ICollection<LtrObject> Objects { get; set; } = new List<LtrObject>();

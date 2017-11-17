@@ -1,7 +1,9 @@
 ﻿using System;
+using Climbing.Web.Utilities;
 
 namespace Climbing.Web.Model.Logging
 {
+    [SerializeSkip]
     public class LtrObjectProperties : BaseEntity
     {
         internal LtrObjectProperties()

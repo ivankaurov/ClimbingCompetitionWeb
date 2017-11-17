@@ -6,6 +6,7 @@ using Climbing.Web.Utilities;
 
 namespace Climbing.Web.Model.Logging
 {
+    [SerializeSkip]
     public class LtrObject : BaseEntity
     {
         internal LtrObject(IIdentityObject obj)
