@@ -17,8 +17,6 @@ namespace Climbing.Web.Model.Logging
         
         public string PropertyType { get; set; }
 
-        public string OldValue { get; set; }
-
-        public string NewValue { get; set; }
+        public string Value { get; set; }
     }
 }

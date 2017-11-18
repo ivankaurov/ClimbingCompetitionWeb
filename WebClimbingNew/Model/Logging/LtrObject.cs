@@ -48,25 +48,14 @@ namespace Climbing.Web.Model.Logging
 
         public string ChangeTypeString { get; private set; }
 
-        internal void SetNewValues(object obj)
+        internal void SetValues(object obj)
         {
             Guard.NotNull(obj, nameof(obj));
-            this.SetValues(obj, (p, v) => p.NewValue = v);
-        }
-
-        internal void SetOldValues(object obj)
-        {
-            Guard.NotNull(obj, nameof(obj));
-            this.SetValues(obj, (p, v) => p.OldValue = v);
-        }
-
-        private void SetValues(object obj, Action<LtrObjectProperties, string> updateAction)
-        {
             var values = ObjectSerializer.ExtractProperties(obj);
             foreach(var v in values)
             {
                 var item = this.GetOrAddObjectProperty(v.Key, v.Value.Type);
-                updateAction(item, v.Value.Value?.ToString());
+                item.Value = v.Value.Value?.ToString();
             }
         }
 

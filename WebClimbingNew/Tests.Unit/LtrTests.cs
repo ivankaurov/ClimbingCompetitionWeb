@@ -9,111 +9,33 @@ namespace Climbing.Web.Tests.Unit
     {
         [Theory]
         [AutoMoqData]
-        public void ShouldAddNewObject(TestIdentityObject obj)
+        public void ShouldThrowOnDuplicateAddObject(TestIdentityObject obj, ChangeType changeTypeOne, ChangeType changeTypeTwo)
         {
             // Arrange
             var sut = new Ltr();
 
             // Act
-            sut.AddNewObject(obj);
+            sut.AddObject(obj, changeTypeOne);
+
+            // Arrange
+            Assert.Throws<ArgumentException>(() => sut.AddObject(obj, changeTypeTwo));
+        }
+
+        [Theory]
+        [AutoMoqData]
+        public void ShouldAddObject(TestIdentityObject obj, ChangeType changeType)
+        {
+            // Arrange
+            var sut = new Ltr();
+
+            // Act
+            sut.AddObject(obj, changeType);
 
             // Arrange
             var ltrObj = Assert.Single(sut.Objects);
-            Assert.Equal(obj.IntProperty.ToString(), ltrObj[nameof(obj.IntProperty)].NewValue);
-            Assert.Equal(obj.StringProperty, ltrObj[nameof(obj.StringProperty)].NewValue);
-            Assert.Null(ltrObj[nameof(obj.IntProperty)].OldValue);
-            Assert.Equal(ChangeType.New,ltrObj.ChangeType);
-        }
-
-        [Theory]
-        [AutoMoqData]
-        public void ShouldThrowOnDuplicateAddNewObject(TestIdentityObject obj)
-        {
-            // Arrange
-            var sut = new Ltr();
-
-            // Act
-            sut.AddNewObject(obj);
-
-            // Arrange
-            Assert.Throws<ArgumentException>(() => sut.AddNewObject(obj));
-        }
-
-        [Theory]
-        [AutoMoqData]
-        public void ShouldAddDeletedObject(TestIdentityObject obj)
-        {
-            // Arrange
-            var sut = new Ltr();
-
-            // Act
-            sut.AddDeletedObject(obj);
-
-            // Arrange
-            var ltrObj = Assert.Single(sut.Objects);
-            Assert.Equal(obj.IntProperty.ToString(), ltrObj[nameof(obj.IntProperty)].OldValue);
-            Assert.Equal(obj.StringProperty, ltrObj[nameof(obj.StringProperty)].OldValue);
-            Assert.Null(ltrObj[nameof(obj.IntProperty)].NewValue);
-            Assert.Equal(ChangeType.Delete, ltrObj.ChangeType);
-        }
-
-        [Theory]
-        [AutoMoqData]
-        public void ShouldThrowOnDuplicateAddDeletedObject(TestIdentityObject obj)
-        {
-            // Arrange
-            var sut = new Ltr();
-
-            // Act
-            sut.AddDeletedObject(obj);
-
-            // Arrange
-            Assert.Throws<ArgumentException>(() => sut.AddDeletedObject(obj));
-        }
-
-        [Theory]
-        [AutoMoqData]
-        public void ShouldAddChangedObject(TestIdentityObject obj, string newValue)
-        {
-            // Arrange
-            var sut = new Ltr();
-            var oldValue = obj.StringProperty;
-
-            // Act
-            sut.AddObjectBeforeChange(obj);
-            obj.StringProperty = newValue;
-            sut.AddObjectAfterChange(obj);
-
-            // Arrange
-            var ltrObj = Assert.Single(sut.Objects);
-            Assert.Equal(oldValue, ltrObj[nameof(obj.StringProperty)].OldValue);
-            Assert.Equal(newValue, ltrObj[nameof(obj.StringProperty)].NewValue);
-            Assert.Equal(ChangeType.Update, ltrObj.ChangeType);
-        }
-
-        [Theory]
-        [AutoMoqData]
-        public void ShouldThrowOnNoOldValues(TestIdentityObject obj)
-        {
-            // Arrange
-            var sut = new Ltr();
-
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() => sut.AddObjectAfterChange(obj));
-        }
-
-        [Theory]
-        [AutoMoqData]
-        public void ShouldThrowOnDuplicateAddOldValuesObject(TestIdentityObject obj)
-        {
-            // Arrange
-            var sut = new Ltr();
-
-            // Act
-            sut.AddDeletedObject(obj);
-
-            // Arrange
-            Assert.Throws<ArgumentException>(() => sut.AddObjectBeforeChange(obj));
+            Assert.Equal(obj.IntProperty.ToString(), ltrObj[nameof(obj.IntProperty)].Value);
+            Assert.Equal(obj.StringProperty, ltrObj[nameof(obj.StringProperty)].Value);
+            Assert.Equal(changeType, ltrObj.ChangeType);
         }
     }
 }

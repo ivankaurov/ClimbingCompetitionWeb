@@ -38,6 +38,7 @@ namespace Climbing.Web.Database.EntityBuilderExtensions
             modelBuilder.BuildBaseEntityColumns<LtrObjectProperties>("ltr_object_properties");
             modelBuilder.Entity<LtrObjectProperties>().BuildStringProperty(e => e.PropertyName, 255, false, nullable: false);
             modelBuilder.Entity<LtrObjectProperties>().BuildStringProperty(e => e.PropertyType, 255, false, nullable: false);
+            modelBuilder.Entity<LtrObjectProperties>().BuildStringProperty(e => e.Value, unicode: true, columnName: "Value");
 
             return modelBuilder;
         }

@@ -16,9 +16,6 @@ namespace Climbing.Web.Database
 {
     public class ClimbingContext : DbContext, IUnitOfWork
     {
-        private static readonly ConcurrentDictionary<Type, Func<DbContext, object>> RepositoryGetDictionary
-         = new ConcurrentDictionary<Type, Func<DbContext, object>>();
-
         public ClimbingContext(DbContextOptions<ClimbingContext> options) : base(options)
         {
         }
@@ -35,15 +32,15 @@ namespace Climbing.Web.Database
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
         {
+            var ltr = new Ltr();
             ChangeTracker.DetectChanges();
 
-            foreach(var entry in ChangeTracker.Entries()
-                            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
-                            .Select(e => e.Entity)
-                            .OfType<BaseEntity>())
-            {
-                entry.SetProperty(e => e.WhenChanged, DateTimeOffset.UtcNow);
-            }
+            this.SetupNewObjects(ltr);
+            this.SetupChangedObjects(ltr);
+            this.SetupDeletedObjects(ltr);
+
+            await this.Repository<Ltr>().AddAsync(ltr, cancellationToken);
+            ChangeTracker.DetectChanges();
 
             ChangeTracker.AutoDetectChangesEnabled = false;
             var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
@@ -52,7 +49,7 @@ namespace Climbing.Web.Database
             return result;
         }
 
-        public DbSet<T> Repository<T>() where T : class => (DbSet<T>)this.GetRepository(typeof(T));
+        public DbSet<T> Repository<T>() where T : class => this.Set<T>();
 
         public async Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -78,12 +75,12 @@ namespace Climbing.Web.Database
                 entry.SetProperty(e => e.WhenCreated, tms);
                 if(entry.ShouldSerialize())
                 {
-                    ltr.AddNewObject(entry);
+                    ltr.AddObject(entry, ChangeType.New);
                 }
             }
         }
 
-        private async Task SetupChangedObjects(Ltr ltr)
+        private void SetupChangedObjects(Ltr ltr)
         {
             var tms = DateTimeOffset.UtcNow;
             foreach(var entry in ChangeTracker.Entries()
@@ -94,34 +91,24 @@ namespace Climbing.Web.Database
                 entry.SetProperty(e => e.WhenChanged, tms);
                 if(entry.ShouldSerialize())
                 {
-                    var oldValues = await this.FindEntity(entry.GetType(), entry.Id);
-                    if(oldValues == null)
-                    {
-                        ltr.AddNewObject(entry);
-                    }
-                    else
-                    {
-                        ltr.AddObjectBeforeChange(oldValues);
-                        ltr.AddObjectAfterChange(entry);
-                    }
+                    ltr.AddObject(entry, ChangeType.Update);
                 }
             }
         }
 
-        private object GetRepository(Type objectType)
-          => RepositoryGetDictionary.GetOrAdd(objectType, key => CompileGetRepository(key)).Invoke(this);
-
-        private static Func<DbContext, object> CompileGetRepository(Type objectType)
+        private void SetupDeletedObjects(Ltr ltr)
         {
-            var dbcParam = Expression.Parameter(typeof(DbContext));
-            var repositoryExpression = Expression.Call(dbcParam, nameof(DbContext.Set), new [] { objectType });
-            var expr = Expression.Lambda<Func<DbContext, object>>(repositoryExpression, dbcParam);
-            return expr.Compile();
-        }
-
-        private Task<BaseEntity> FindEntity(Type entityType, Guid id)
-        {
-            throw new NotImplementedException();
+            var tms = DateTimeOffset.UtcNow;
+            foreach(var entry in ChangeTracker.Entries()
+                            .Where(e => e.State == EntityState.Deleted)
+                            .Select(e => e.Entity)
+                            .OfType<BaseEntity>())
+            {
+                if(entry.ShouldSerialize())
+                {
+                    ltr.AddObject(entry, ChangeType.Delete);
+                }
+            }
         }
     }
 
