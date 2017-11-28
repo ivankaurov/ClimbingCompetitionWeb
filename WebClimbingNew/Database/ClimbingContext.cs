@@ -26,7 +26,9 @@ namespace Climbing.Web.Database
                         .MapLtrObject()
                         .MapLtrObjectProperties()
                         .MapPersonEntity()
-                        .MapTeamEntity();
+                        .MapTeamEntity()
+                        .MapAutonumDescriptionEntity()
+                        .MapAutonumValueEntity();
             base.OnModelCreating(modelBuilder);
         }
 
