@@ -6,6 +6,12 @@ services:
       context: ../WebClimbingNew
       args:
         source: ./obj/Docker
+    ports:
+      - 3080:80
+    env_file:
+      - ./docker-compose.env
+    networks:
+      - sql
 
   api:
     image: webclimbingapi:latest
@@ -13,6 +19,12 @@ services:
       context: ../WebClimbing.Api
       args:
         source: ./obj/Docker
+    ports:
+      - 3081:80
+    env_file:
+      - ./docker-compose.env
+    networks:
+      - sql
 
   migrator:
     image: webclimbingmigrator:latest
@@ -20,3 +32,12 @@ services:
       context: ../MigratorService
       args:
         source: ./obj/Docker
+    env_file:
+      - ./docker-compose.env
+    networks:
+      - sql
+
+networks:
+  sql:
+    external:
+      name: infra_my-sql
