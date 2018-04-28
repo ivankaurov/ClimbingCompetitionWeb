@@ -2,8 +2,10 @@ version: "3.4"
 services:
   postgres-sql:
     image: postgres:latest
+    container_name: postgres
     environment:
       - POSTGRES_PASSWORD=P@ssw0rd
+    restart: unless-stopped
     networks:
       my-sql:
         aliases:

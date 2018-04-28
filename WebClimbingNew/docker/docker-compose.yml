@@ -2,6 +2,7 @@ version: "3.2"
 services:
   web:
     image: webclimbingnew:latest
+    container_name: web-facade
     build:
       context: ../WebClimbingNew
       args:
@@ -12,9 +13,11 @@ services:
       - ./docker-compose.env
     networks:
       - sql
+      - idp-net
 
   api:
     image: webclimbingapi:latest
+    container_name: web-api
     build:
       context: ../WebClimbing.Api
       args:
@@ -25,9 +28,11 @@ services:
       - ./docker-compose.env
     networks:
       - sql
+      - idp-net
 
   migrator:
     image: webclimbingmigrator:latest
+    container_name: migrator
     build:
       context: ../MigratorService
       args:
@@ -37,7 +42,23 @@ services:
     networks:
       - sql
 
+  idp:
+    image: webclimbing-idp:latest
+    container_name: web-idp
+    build:
+      context: ../WebClimbing.IDP
+      args:
+        source: ./obj/Docker
+    ports:
+      - 3082:80
+    env_file:
+      - ./docker-compose.env
+    restart: unless-stopped
+    networks:
+      - idp-net
+
 networks:
   sql:
     external:
       name: infra_my-sql
+  idp-net:
