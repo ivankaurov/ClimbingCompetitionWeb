@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,7 @@ namespace Climbing.Web.IDP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentityServer();
             services.AddMvc();
 
             // Register the Swagger generator, defining one or more Swagger documents
@@ -41,6 +43,8 @@ namespace Climbing.Web.IDP
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            ////app.UseIdentityServer();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
