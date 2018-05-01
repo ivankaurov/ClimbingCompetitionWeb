@@ -7,7 +7,7 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}/WebClimbing.Api/WebClimbing.Api.csproj"
+                "${workspaceRoot}/WebClimbing.IDP/WebClimbing.IDP.csproj"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"

@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/WebClimbing.Api/bin/Debug/netcoreapp2.0/Climbing.Web.Api.dll",
+            "program": "${workspaceRoot}/WebClimbing.IDP/bin/Debug/netcoreapp2.0/Climbing.Web.IDP.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/WebClimbing.Api",
+            "cwd": "${workspaceRoot}/WebClimbing.IDP",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {

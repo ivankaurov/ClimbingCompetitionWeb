@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WebClimbing.Api\WebClimbing.Api.csproj" />
     <ProjectReference Include="..\WebClimbingNew\WebClimbingNew.csproj" />
+    <ProjectReference Include="..\WebClimbing.IDP\WebClimbing.IDP.csproj" />
     <ProjectReference Include="..\MigratorService\MigratorService.csproj" />
   </ItemGroup>
 
