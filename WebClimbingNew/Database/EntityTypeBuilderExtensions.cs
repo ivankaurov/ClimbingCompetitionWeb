@@ -1,12 +1,12 @@
-using System;
-using System.Linq.Expressions;
-using Climbing.Web.Model;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Climbing.Web.Utilities;
-
 namespace Climbing.Web.Database
 {
+    using System;
+    using System.Linq.Expressions;
+    using Climbing.Web.Model;
+    using Climbing.Web.Utilities;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     internal static class EntityTypeBuilderExtensions
     {
         public static EntityTypeBuilder<T> BuildBaseEntityColumns<T>(this ModelBuilder modelBuilder, string tableName)
@@ -54,12 +54,12 @@ namespace Climbing.Web.Database
             var result = builder.Property(property)
                 .IsUnicode(unicode)
                 .IsRequired(!nullable);
-            if(!string.IsNullOrWhiteSpace(columnName))
+            if (!string.IsNullOrWhiteSpace(columnName))
             {
                 result = result.HasColumnName(columnName);
             }
 
-            if(maxLength > 0)
+            if (maxLength > 0)
             {
                 result = result.HasMaxLength(maxLength.Value);
             }

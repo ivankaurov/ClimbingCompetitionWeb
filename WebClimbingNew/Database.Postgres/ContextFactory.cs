@@ -1,10 +1,9 @@
-using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Climbing.Web.Database;
-
 namespace Climbing.Web.Database.Postgres
 {
+    using System.Reflection;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Design;
+
     public sealed class ContextFactory : IDesignTimeDbContextFactory<ClimbingContext>
     {
         public ClimbingContext CreateDbContext(string[] args)

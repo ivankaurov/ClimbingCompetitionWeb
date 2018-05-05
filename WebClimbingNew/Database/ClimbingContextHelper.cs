@@ -1,15 +1,13 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Climbing.Web.Common.Service;
-using Climbing.Web.Model;
-using Climbing.Web.Utilities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-
 namespace Climbing.Web.Database
 {
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Climbing.Web.Common.Service;
+    using Climbing.Web.Utilities;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+
     internal sealed class ClimbingContextHelper : IContextHelper
     {
         private readonly ClimbingContext context;
@@ -29,7 +27,7 @@ namespace Climbing.Web.Database
             this.logger.LogTrace(nameof(this.IsMigrated) + ": Enter");
 
             var result = !(await this.context.Database.GetPendingMigrationsAsync(cancellationToken)).Any();
-            
+
             this.logger.LogInformation(nameof(this.IsMigrated) + ": Exit {0}", result);
             return result;
         }

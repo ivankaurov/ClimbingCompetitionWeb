@@ -1,9 +1,9 @@
-using Climbing.Web.Model.Autonumeration;
-using Climbing.Web.Utilities;
-using Microsoft.EntityFrameworkCore;
-
 namespace Climbing.Web.Database.EntityBuilderExtensions
 {
+    using Climbing.Web.Model.Autonumeration;
+    using Climbing.Web.Utilities;
+    using Microsoft.EntityFrameworkCore;
+
     internal static class AutonumModelBuilderExtensions
     {
         public static ModelBuilder MapAutonumDescriptionEntity(this ModelBuilder modelBuilder)

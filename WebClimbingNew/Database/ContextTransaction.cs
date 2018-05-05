@@ -1,12 +1,10 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Climbing.Web.Common.Service.Repository;
-using Climbing.Web.Utilities;
-using Microsoft.EntityFrameworkCore.Storage;
-
 namespace Climbing.Web.Database
 {
+    using System;
+    using Climbing.Web.Common.Service.Repository;
+    using Climbing.Web.Utilities;
+    using Microsoft.EntityFrameworkCore.Storage;
+
     internal sealed class ContextTransaction : ITransaction
     {
         private readonly IDbContextTransaction dbctxTransaction;
@@ -23,7 +21,7 @@ namespace Climbing.Web.Database
 
         public void Commit()
         {
-            if(this.operationsComplete)
+            if (this.operationsComplete)
             {
                 throw new InvalidOperationException("Transaction already completed");
             }
@@ -34,12 +32,12 @@ namespace Climbing.Web.Database
 
         public void Dispose()
         {
-            if(!this.operationsComplete)
+            if (!this.operationsComplete)
             {
                 this.Rollback();
             }
 
-            if(!this.objectDisposed)
+            if (!this.objectDisposed)
             {
                 this.dbctxTransaction.Dispose();
                 this.objectDisposed = true;
@@ -48,7 +46,7 @@ namespace Climbing.Web.Database
 
         public void Rollback()
         {
-            if(this.operationsComplete)
+            if (this.operationsComplete)
             {
                 throw new InvalidOperationException("Transaction already completed");
             }

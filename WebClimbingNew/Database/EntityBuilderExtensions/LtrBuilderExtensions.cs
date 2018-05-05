@@ -1,8 +1,8 @@
-using Climbing.Web.Model.Logging;
-using Microsoft.EntityFrameworkCore;
-
 namespace Climbing.Web.Database.EntityBuilderExtensions
 {
+    using Climbing.Web.Model.Logging;
+    using Microsoft.EntityFrameworkCore;
+
     internal static class LtrBuilderExtensions
     {
         public static ModelBuilder MapLtr(this ModelBuilder modelBuilder)
