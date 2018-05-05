@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Climbing.Web.Utilities
+﻿namespace Climbing.Web.Utilities
 {
+    using System;
+
     public sealed class ObjectPropertyValue
     {
         public ObjectPropertyValue(Type type, object value, MemberType memberType)
@@ -12,6 +12,7 @@ namespace Climbing.Web.Utilities
             this.Value = value;
             this.MemberType = memberType;
         }
+
         public Type Type { get; }
 
         public object Value { get; }

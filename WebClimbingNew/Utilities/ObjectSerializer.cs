@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-
-namespace Climbing.Web.Utilities
+﻿namespace Climbing.Web.Utilities
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Reflection;
+
     public static class ObjectSerializer
     {
         private static readonly ConcurrentDictionary<Type, Func<object, IDictionary<string, ObjectPropertyValue>>> CompiledPropertyExtractors = new ConcurrentDictionary<Type, Func<object, IDictionary<string, ObjectPropertyValue>>>();
         private static readonly ConstructorInfo DictionaryCtor = typeof(Dictionary<string, ObjectPropertyValue>).GetConstructor(new[] { typeof(IComparer<string>) });
 
-        public static IDictionary<string,ObjectPropertyValue> ExtractProperties(object obj)
+        public static IDictionary<string, ObjectPropertyValue> ExtractProperties(object obj)
         {
             Guard.NotNull(obj, nameof(obj));
 
@@ -51,7 +50,8 @@ namespace Climbing.Web.Utilities
 
                 var itemExpression = Expression.Variable(typeof(ObjectPropertyValue));
 
-                var addblock = Expression.Block(new[] { itemExpression },
+                var addblock = Expression.Block(
+                    new[] { itemExpression },
                     Expression.Assign(itemExpression, Expression.New(objectPropertyInfoCtor, Expression.Constant(p.Type), Expression.TypeAs(memberExtractExpression, typeof(object)), Expression.Constant(p.MemberType))),
                     Expression.Call(result, nameof(IDictionary<string, ObjectPropertyValue>.Add), null, Expression.Constant(p.Name), itemExpression));
 
@@ -64,12 +64,12 @@ namespace Climbing.Web.Utilities
 
         private static bool ShouldSerializeMember(MemberInfo memberInfo)
         {
-            if(memberInfo.Name.Contains("<"))
+            if (memberInfo.Name.Contains("<"))
             {
                 return false;
             }
 
-            if(Attribute.IsDefined(memberInfo, typeof(SerializeSkipAttribute)))
+            if (Attribute.IsDefined(memberInfo, typeof(SerializeSkipAttribute)))
             {
                 return false;
             }

@@ -1,7 +1,7 @@
-using System;
-
 namespace Climbing.Web.Utilities
 {
+    using System;
+
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class AutoNumAttribute : Attribute
     {
@@ -23,8 +23,8 @@ namespace Climbing.Web.Utilities
         {
             Guard.NotNullOrWhitespace(parentNavigationalPropertyName, nameof(parentNavigationalPropertyName));
             Guard.NotNullOrWhitespace(parentNumberPropertyName, nameof(parentNumberPropertyName));
-            ParentNavigationalPropertyName = parentNavigationalPropertyName;
-            ParentNumberPropertyName = parentNumberPropertyName;
+            this.ParentNavigationalPropertyName = parentNavigationalPropertyName;
+            this.ParentNumberPropertyName = parentNumberPropertyName;
         }
 
         public string SequenceName { get; }
@@ -34,7 +34,7 @@ namespace Climbing.Web.Utilities
         public string ParentIdPropertyName { get; }
 
         public string ParentNavigationalPropertyName { get; }
-        
+
         public string ParentNumberPropertyName { get; }
     }
 }

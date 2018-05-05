@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-
 namespace Climbing.Web.Utilities
 {
+    using System.Collections.Generic;
+
     public interface IPagedCollection<T> : IEnumerable<T>
     {
         ICollection<T> Page { get; }

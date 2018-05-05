@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Climbing.Web.Utilities
+﻿namespace Climbing.Web.Utilities
 {
+    using System;
+
     public static class Guard
     {
         public static void NotNull(object value, string parameterName, string exceptionMessage = null)
         {
-            if(value == null)
+            if (value == null)
             {
                 if (string.IsNullOrWhiteSpace(exceptionMessage))
                 {
@@ -34,11 +32,11 @@ namespace Climbing.Web.Utilities
 
         public static void Requires(bool predicate, string parameterName = null, string exceptionMessage = null)
         {
-            if(!predicate)
+            if (!predicate)
             {
-                if(string.IsNullOrWhiteSpace(parameterName))
+                if (string.IsNullOrWhiteSpace(parameterName))
                 {
-                    if(string.IsNullOrWhiteSpace(exceptionMessage))
+                    if (string.IsNullOrWhiteSpace(exceptionMessage))
                     {
                         throw new ArgumentException();
                     }

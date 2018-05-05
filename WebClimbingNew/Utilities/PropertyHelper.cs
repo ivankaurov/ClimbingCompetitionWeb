@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Concurrent;
-using System.Linq.Expressions;
-using System.Reflection;
-
 namespace Climbing.Web.Utilities
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Linq.Expressions;
+    using System.Reflection;
+
     public static class PropertyHelper
     {
         private static readonly ConcurrentDictionary<string, Delegate> Delegates = new ConcurrentDictionary<string, Delegate>(StringComparer.Ordinal);
@@ -27,7 +27,7 @@ namespace Climbing.Web.Utilities
             var parameter = Expression.Parameter(typeof(TObject));
             var assignParameter = Expression.Parameter(typeof(TResult));
             MemberExpression propertyExpression;
-            if(member is PropertyInfo pi)
+            if (member is PropertyInfo pi)
             {
                 propertyExpression = Expression.Property(parameter, pi.GetSetMethod(true));
             }
@@ -35,17 +35,17 @@ namespace Climbing.Web.Utilities
             {
                 propertyExpression = Expression.Field(parameter, member.Name);
             }
-            
+
             BinaryExpression assign;
             try
             {
                 assign = Expression.Assign(propertyExpression, assignParameter);
             }
-            catch(ArgumentException) when (member is FieldInfo fi)
+            catch (ArgumentException) when (member is FieldInfo fi)
             {
                 return new Action<TObject, TResult>((obj, v) => fi.SetValue(obj, v));
             }
-            
+
             return Expression.Lambda<Action<TObject, TResult>>(assign, parameter, assignParameter).Compile();
         }
     }

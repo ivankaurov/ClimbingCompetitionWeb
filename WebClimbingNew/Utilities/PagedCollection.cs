@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Climbing.Web.Utilities
 {
+    using System.Collections;
+    using System.Collections.Generic;
+
     public class PagedCollection<T> : IPagedCollection<T>
     {
         public PagedCollection(IEnumerable<T> page, int pageNumber, int totalPages, int pageSize)

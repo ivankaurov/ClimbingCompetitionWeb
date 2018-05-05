@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Concurrent;
-
 namespace Climbing.Web.Utilities
 {
+    using System;
+    using System.Collections.Concurrent;
+
     public static class SerializationHelper
     {
         private static readonly ConcurrentDictionary<Type, bool> SerializableTypes = new ConcurrentDictionary<Type, bool>();

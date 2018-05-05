@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-
 namespace Climbing.Web.Utilities.Mapper
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+
     public sealed class AutoMapSetup<TSourceObject, TProperty>
     {
         private readonly Expression<Func<TSourceObject, TProperty>> source;
@@ -17,7 +16,7 @@ namespace Climbing.Web.Utilities.Mapper
         public void To<TTargetObject>(Expression<Func<TTargetObject, TProperty>> targetExpression)
         {
             Guard.NotNull(targetExpression, nameof(targetExpression));
-            if(!(targetExpression.Body is MemberExpression mex))
+            if (!(targetExpression.Body is MemberExpression mex))
             {
                 throw new ArgumentException(nameof(MemberExpression) + " required.", nameof(targetExpression));
             }
