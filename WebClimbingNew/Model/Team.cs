@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-
 namespace Climbing.Web.Model
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Team : BaseEntity
     {
         public const string RootTeamCode = "";
 
         public const string RootTeamName = "Россия";
-        
+
         public string Name { get; set; }
 
         public string Code { get; set; }

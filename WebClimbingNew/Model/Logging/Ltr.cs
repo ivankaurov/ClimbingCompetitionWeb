@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Climbing.Web.Utilities;
-
 namespace Climbing.Web.Model.Logging
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Climbing.Web.Utilities;
+
     [SerializeSkip]
     public class Ltr : BaseEntity
     {
@@ -15,7 +15,7 @@ namespace Climbing.Web.Model.Logging
             Guard.NotNull(obj, nameof(obj));
 
             var ltrObject = this.Objects.FirstOrDefault(o => o.ObjectId.Equals(obj.Id));
-            if(ltrObject != null)
+            if (ltrObject != null)
             {
                 throw new ArgumentException($"Object Id={obj.Id} already added. ChangeType={ltrObject.ChangeType}", nameof(obj));
             }

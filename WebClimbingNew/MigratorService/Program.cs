@@ -1,17 +1,17 @@
-﻿using System;
-using System.Runtime.ExceptionServices;
-using System.Threading;
-using System.Threading.Tasks;
-using Climbing.Web.Common.Service;
-using Climbing.Web.Common.Service.Repository;
-using Climbing.Web.Database;
-using Climbing.Web.Database.Postgres;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-namespace Climbing.Web.MigratorService
+﻿namespace Climbing.Web.MigratorService
 {
+    using System;
+    using System.Runtime.ExceptionServices;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Climbing.Web.Common.Service;
+    using Climbing.Web.Common.Service.Repository;
+    using Climbing.Web.Database;
+    using Climbing.Web.Database.Postgres;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+
     internal static class Program
     {
         private static readonly TimeSpan WaitTimeout = TimeSpan.FromSeconds(30);
@@ -33,7 +33,7 @@ namespace Climbing.Web.MigratorService
                 MainAsync().GetAwaiter().GetResult();
                 Console.WriteLine("Completed succesfully.");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine($"Failed: {e}");
                 ex = ExceptionDispatchInfo.Capture(e);
@@ -43,7 +43,7 @@ namespace Climbing.Web.MigratorService
             Console.WriteLine($"Waiting for {WaitTimeout} to send the results.");
             Thread.Sleep(WaitTimeout);
 
-            if(ex == null)
+            if (ex == null)
             {
                 Environment.Exit(0);
             }

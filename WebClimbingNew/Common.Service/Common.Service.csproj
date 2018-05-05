@@ -10,7 +10,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.1" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta006" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +22,10 @@
     <Compile Include="..\Shared\AssemblyInfo.Shared.cs">
       <Link>AssemblyInfo.Shared.cs</Link>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta006" />
   </ItemGroup>
 
   <PropertyGroup>

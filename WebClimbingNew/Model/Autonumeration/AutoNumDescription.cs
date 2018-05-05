@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using Climbing.Web.Utilities;
-
 namespace Climbing.Web.Model.Autonumeration
 {
+    using System.Collections.Generic;
+    using Climbing.Web.Utilities;
+
     public class AutoNumDescription : BaseEntity
     {
         public AutoNumDescription(string name, bool splitByParent, bool includeParentNumber, string format)
@@ -20,7 +20,7 @@ namespace Climbing.Web.Model.Autonumeration
         {
         }
 
-        public string Name{ get; private set; }
+        public string Name { get; private set; }
 
         public bool SplitByParent { get; private set; }
 

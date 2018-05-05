@@ -1,8 +1,8 @@
-using System;
-using Climbing.Web.Utilities;
-
 namespace Climbing.Web.Model.Autonumeration
 {
+    using System;
+    using Climbing.Web.Utilities;
+
     public class AutoNumValue : BaseEntity
     {
         public AutoNumValue(long counter, AutoNumDescription autoNumDescription, Guid? parentObjectId)

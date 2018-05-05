@@ -16,4 +16,13 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta006" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>..\Shared\StyleCop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
 </Project>
