@@ -1,18 +1,16 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Climbing.Web.Common.Service.Exceptions;
-using Climbing.Web.Common.Service.Repository;
-using Climbing.Web.Model;
-using Climbing.Web.Model.Facade;
-using Climbing.Web.Utilities;
-using Climbing.Web.Utilities.Mapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-
 namespace Climbing.Web.Common.Service.Facade
 {
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Climbing.Web.Common.Service.Exceptions;
+    using Climbing.Web.Common.Service.Repository;
+    using Climbing.Web.Model;
+    using Climbing.Web.Model.Facade;
+    using Climbing.Web.Utilities;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+
     internal sealed class TeamsService : ITeamsService
     {
         private readonly IUnitOfWork unitOfWork;
@@ -32,12 +30,13 @@ namespace Climbing.Web.Common.Service.Facade
             Guard.NotNull(parentTeamCode, nameof(parentTeamCode));
 
             var parentTeam = await this.unitOfWork.Repository<Team>().FirstOrDefaultAsync(t => t.Code == parentTeamCode);
-            if(parentTeam == null)
+            if (parentTeam == null)
             {
                 throw new ObjectNotFoundException($"Can't find team {parentTeamCode}");
             }
 
-            var entity = new Team {
+            var entity = new Team
+            {
                 Name = team.Name,
                 Code = string.IsNullOrWhiteSpace(team.Code)
                         ? (await this.GenerateNextTeamCode(parentTeam, cancellationToken))
@@ -67,14 +66,14 @@ namespace Climbing.Web.Common.Service.Facade
 
             var team = await this.unitOfWork.Repository<Team>().FirstOrDefaultAsync(t => t.Code == teamCode);
 
-            return team==null
+            return team == null
                 ? null
                 : new TeamFacade
-                    {
-                        Code=team.Code,
-                        Id=team.Id,
-                        Name = team.Name,
-                    };
+                {
+                    Code = team.Code,
+                    Id = team.Id,
+                    Name = team.Name,
+                };
         }
 
         public Task<IPagedCollection<TeamFacade>> GetTeams(IPageParameters paging, CancellationToken cancellationToken = default(CancellationToken))
@@ -89,7 +88,7 @@ namespace Climbing.Web.Common.Service.Facade
             Guard.NotNull(paging, nameof(paging));
 
             var parentTeam = await this.unitOfWork.Repository<Team>().FirstOrDefaultAsync(t => t.Code == parentTeamCode);
-            if(parentTeam == null)
+            if (parentTeam == null)
             {
                 throw new ObjectNotFoundException();
             }
@@ -97,11 +96,11 @@ namespace Climbing.Web.Common.Service.Facade
             var data = await this.unitOfWork.Repository<Team>()
                             .Where(t => t.ParentId == parentTeam.Id)
                             .Select(t => new TeamFacade
-                                {
-                                    Id = t.Id,
-                                    Name = t.Name,
-                                    Code = t.Code,
-                                })
+                            {
+                                Id = t.Id,
+                                Name = t.Name,
+                                Code = t.Code,
+                            })
                             .OrderBy(f => f.Code)
                             .ApplyPaging(paging, cancellationToken);
             return data;
@@ -120,7 +119,7 @@ namespace Climbing.Web.Common.Service.Facade
             {
                 currentCode = $"{parentTeam.Code}{++currentLocalCode:00}";
             }
-            while(await this.unitOfWork.Repository<Team>().AnyAsync(t => t.Code == currentCode, cancellationToken));
+            while (await this.unitOfWork.Repository<Team>().AnyAsync(t => t.Code == currentCode, cancellationToken));
             return currentCode;
         }
     }

@@ -1,9 +1,7 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Climbing.Web.Common.Service.Repository
 {
+    using System;
+
     public interface ITransaction : IDisposable
     {
         void Commit();

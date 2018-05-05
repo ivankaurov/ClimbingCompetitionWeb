@@ -1,16 +1,16 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Climbing.Web.Common.Service.Facade;
-using Climbing.Web.Model;
-using Climbing.Web.Model.Facade;
-using Climbing.Web.Utilities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-
 namespace Climbing.Web.Common.Service.Repository
 {
+    using System;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Climbing.Web.Common.Service.Facade;
+    using Climbing.Web.Model;
+    using Climbing.Web.Model.Facade;
+    using Climbing.Web.Utilities;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+
     internal sealed class SeedingHelper : ISeedingHelper
     {
         internal static readonly Team[] SrcTeams =
@@ -21,18 +21,19 @@ namespace Climbing.Web.Common.Service.Repository
                 new Team { Name = "Свердловская обл.", Code = "66" },
                 new Team { Name = "ЯНАО", Code = "89" },
                 new Team
-                { 
+                {
                     Name = "Санкт-Петербург",
                     Code = "78",
                     Children =
                     {
-                        new Team { Name = "Балт. Берег"},
+                        new Team { Name = "Балт. Берег" },
                         new Team { Name = "ЦСКА" },
                         new Team { Name = "ЦФКСиЗ" },
-                        new Team { Name = "шк.495" }
+                        new Team { Name = "шк.495" },
                     },
-                }
+                },
             };
+
         private readonly IUnitOfWork unitOfWork;
         private readonly ITeamsService teamsService;
         private readonly ILogger<SeedingHelper> logger;
@@ -47,20 +48,20 @@ namespace Climbing.Web.Common.Service.Repository
             this.logger = logger;
             this.teamsService = teamsService;
         }
-        
+
         public async Task<bool> IsSeeded(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.logger.LogTrace(nameof(this.IsSeeded) + ": Enter");
 
             var rootTeam = await this.GetRootTeam(cancellationToken);
             var result = true;
-            if(rootTeam == null)
+            if (rootTeam == null)
             {
                 this.logger.LogInformation("Root team missing");
                 return false;
             }
 
-            foreach(var t in SrcTeams)
+            foreach (var t in SrcTeams)
             {
                 var teamCreated = await this.TeamAndChildrenExist(t, rootTeam, cancellationToken);
                 result &= teamCreated;
@@ -74,7 +75,7 @@ namespace Climbing.Web.Common.Service.Repository
         {
             this.logger.LogTrace(nameof(this.Seed) + ": Enter");
 
-            if(await this.IsSeeded(cancellationToken))
+            if (await this.IsSeeded(cancellationToken))
             {
                 this.logger.LogInformation(nameof(this.Seed) + ": Database already seeded.");
                 return;
@@ -83,24 +84,24 @@ namespace Climbing.Web.Common.Service.Repository
             try
             {
                 var rootTeam = await this.GetRootTeam(cancellationToken);
-                if(rootTeam == null)
+                if (rootTeam == null)
                 {
                     rootTeam = await this.CreateRootTeam(cancellationToken);
                 }
 
-                foreach(var t in SrcTeams)
+                foreach (var t in SrcTeams)
                 {
                     await this.CreateTeamAndChildren(t, rootTeam, cancellationToken);
                 }
 
                 this.logger.LogInformation(nameof(this.Seed) + ": Seeding completed.");
             }
-            catch(OperationCanceledException ex)
+            catch (OperationCanceledException ex)
             {
                 this.logger.LogWarning(ex, "Seeding cancelled");
                 throw;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.logger.LogCritical(ex, "Seeding failed: {0}", ex.Message);
                 throw;
@@ -115,18 +116,18 @@ namespace Climbing.Web.Common.Service.Repository
                 ? await this.unitOfWork.Repository<Team>().FirstOrDefaultAsync(t => t.ParentId == parent.Id && t.Name == team.Name, cancellationToken)
                 : await this.unitOfWork.Repository<Team>().FirstOrDefaultAsync(t => t.Code == team.Code, cancellationToken);
 
-            if(foundTeam == null)
+            if (foundTeam == null)
             {
                 this.logger.LogInformation("Team {0} {1} {2} not found", team.Code, team.Name, parent.Name);
                 return false;
             }
 
-            if(team.Children.Count > 0)
+            if (team.Children.Count > 0)
             {
                 this.logger.LogInformation("Checking children for {0}", foundTeam.Name);
                 foreach (var item in team.Children)
                 {
-                    if(!(await this.TeamAndChildrenExist(item, foundTeam, cancellationToken)))
+                    if (!(await this.TeamAndChildrenExist(item, foundTeam, cancellationToken)))
                     {
                         this.logger.LogInformation("Child {0} for team {1} not exists", item.Name, foundTeam.Name);
                         return false;
@@ -157,7 +158,7 @@ namespace Climbing.Web.Common.Service.Repository
                 new TeamFacade
                 {
                     Name = teamToCreate.Name,
-                    Code = teamToCreate.Code
+                    Code = teamToCreate.Code,
                 },
                 cancellationToken);
 
@@ -165,7 +166,7 @@ namespace Climbing.Web.Common.Service.Repository
 
             this.logger.LogInformation("Team {0} {1} {2} created.", result.Code, result.Name, result.Id);
 
-            foreach(var child in teamToCreate.Children.OrderBy(c => c.Name))
+            foreach (var child in teamToCreate.Children.OrderBy(c => c.Name))
             {
                 await this.CreateTeamAndChildren(child, result, cancellationToken);
             }

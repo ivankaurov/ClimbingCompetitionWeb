@@ -1,7 +1,7 @@
-using System;
-
 namespace Climbing.Web.Common.Service
 {
+    using System;
+
     public class AppSettings
     {
         public string ConnectionString { get; set; }

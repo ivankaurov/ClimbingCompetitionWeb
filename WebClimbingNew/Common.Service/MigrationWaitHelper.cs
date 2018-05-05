@@ -1,12 +1,12 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Climbing.Web.Common.Service.Repository;
-using Climbing.Web.Utilities;
-using Microsoft.Extensions.Logging;
-
 namespace Climbing.Web.Common.Service
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Climbing.Web.Common.Service.Repository;
+    using Climbing.Web.Utilities;
+    using Microsoft.Extensions.Logging;
+
     internal sealed class MigrationWaitHelper : IMigrationWaitHelper
     {
         private readonly IContextHelper contextHelper;
@@ -29,8 +29,8 @@ namespace Climbing.Web.Common.Service
             Guard.Requires(pollInterval > TimeSpan.Zero, nameof(pollInterval), "Value should be positive");
             Guard.Requires(waitTimout > TimeSpan.Zero, nameof(waitTimout), "Value should be positive");
 
-            using(var timerCts = new CancellationTokenSource(waitTimout))
-            using(var mixedCts = CancellationTokenSource.CreateLinkedTokenSource(timerCts.Token, cancellationToken))
+            using (var timerCts = new CancellationTokenSource(waitTimout))
+            using (var mixedCts = CancellationTokenSource.CreateLinkedTokenSource(timerCts.Token, cancellationToken))
             {
                 try
                 {
@@ -40,7 +40,7 @@ namespace Climbing.Web.Common.Service
                     this.logger.LogInformation("Waiting for seeding to complete");
                     await this.WaitForTaskToComplete(ct => this.seeder.IsSeeded(ct), pollInterval, mixedCts.Token);
                 }
-                catch(OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+                catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
                 {
                     this.logger.LogWarning("Exiting on timeout {0}", waitTimout);
                     throw new TimeoutException($"Database isn't migrated in {waitTimout}");
@@ -50,9 +50,9 @@ namespace Climbing.Web.Common.Service
 
         private async Task WaitForTaskToComplete(Func<CancellationToken, Task<bool>> completionPollFunc, TimeSpan pollInterval, CancellationToken cancellationToken)
         {
-            while(true)
+            while (true)
             {
-                if(await completionPollFunc(cancellationToken))
+                if (await completionPollFunc(cancellationToken))
                 {
                     this.logger.LogInformation("Task complete.");
                     return;

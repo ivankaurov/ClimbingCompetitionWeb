@@ -28,6 +28,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{229ADAFA-0993-4CAA-B95F-9FE6BDE6E9F5}"
 	ProjectSection(SolutionItems) = preProject
 		Shared\AssemblyInfo.Shared.cs = Shared\AssemblyInfo.Shared.cs
+		Shared\StyleCop.ruleset = Shared\StyleCop.ruleset
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{BAD670C1-E9B3-4834-8350-BB694B89F342}"
