@@ -1,10 +1,10 @@
-using System;
-using Climbing.Web.Tests.Unit.Utilities;
-using Climbing.Web.Utilities;
-using Xunit;
-
 namespace Climbing.Web.Tests.Unit
 {
+    using System;
+    using Climbing.Web.Tests.Unit.Utilities;
+    using Climbing.Web.Utilities;
+    using Xunit;
+
     public class PropertyHelperTests
     {
         [Theory]
@@ -31,18 +31,21 @@ namespace Climbing.Web.Tests.Unit
         public void ShouldSetReadOnlyField(string expected, TestClass sut)
         {
             // Act
-            sut.SetProperty(s => s.readonlyField, expected);
+            sut.SetProperty(s => s.ReadonlyField, expected);
 
             // Assert
-            Assert.Equal(expected, sut.readonlyField);
+            Assert.Equal(expected, sut.ReadonlyField);
         }
 
         public sealed class TestClass
         {
-            public readonly string readonlyField = Guid.NewGuid().ToString();
+#pragma warning disable SA1401 // Fields should be private
+            public readonly string ReadonlyField = Guid.NewGuid().ToString();
+#pragma warning restore SA1401 // Fields should be private
+
             public string PrivateProperty { get; private set; }
 
             public string PublicProperty { get; set; }
         }
-    } 
+    }
 }

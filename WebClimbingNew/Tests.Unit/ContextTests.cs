@@ -1,18 +1,15 @@
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Climbing.Web.Common.Service.Repository;
-using Climbing.Web.Database;
-using Climbing.Web.Model;
-using Climbing.Web.Model.Logging;
-using Climbing.Web.Tests.Unit.Utilities;
-using Climbing.Web.Utilities;
-using Microsoft.EntityFrameworkCore;
-using Xunit;
-
 namespace Climbing.Web.Tests.Unit
 {
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+    using Climbing.Web.Common.Service.Repository;
+    using Climbing.Web.Model;
+    using Climbing.Web.Model.Logging;
+    using Microsoft.EntityFrameworkCore;
+    using Xunit;
+
     public class ContextTests
     {
         [Theory]
@@ -21,7 +18,7 @@ namespace Climbing.Web.Tests.Unit
         {
             // Arrange (add)
             var testTeam = new Team
-            { 
+            {
                 Name = oldName,
                 Code = code,
             };

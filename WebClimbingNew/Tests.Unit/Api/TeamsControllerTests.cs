@@ -1,18 +1,17 @@
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Climbing.Web.Api.Controllers;
-using Climbing.Web.Api.Model;
-using Climbing.Web.Common.Service.Exceptions;
-using Climbing.Web.Common.Service.Facade;
-using Climbing.Web.Model.Facade;
-using Climbing.Web.Utilities;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Xunit;
-
 namespace Climbing.Web.Tests.Unit.Api
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Climbing.Web.Api.Controllers;
+    using Climbing.Web.Api.Model;
+    using Climbing.Web.Common.Service.Exceptions;
+    using Climbing.Web.Common.Service.Facade;
+    using Climbing.Web.Model.Facade;
+    using Climbing.Web.Utilities;
+    using Microsoft.AspNetCore.Mvc;
+    using Moq;
+    using Xunit;
+
     public class TeamsControllerTests
     {
         [Theory]
@@ -160,7 +159,7 @@ namespace Climbing.Web.Tests.Unit.Api
         public async Task ShouldReturn404OnIncorrectCode(Mock<ITeamsService> teamsService, string code, Mock<IUrlHelper> urlHelper)
         {
             // Arrange
-            teamsService.Setup(s => s.GetRootTeam(It.IsAny<CancellationToken>())).ReturnsAsync((TeamFacade)null);
+            teamsService.Setup(s => s.GetTeam(code, It.IsAny<CancellationToken>())).ReturnsAsync((TeamFacade)null);
             var sut = new TeamsController(teamsService.Object, urlHelper.Object);
 
             // Act
@@ -175,7 +174,7 @@ namespace Climbing.Web.Tests.Unit.Api
         public async Task ShouldReturnPageLinks(Mock<ITeamsService> teamsService, string code, Mock<IUrlHelper> urlHelper, TeamFacade value)
         {
             // Arrange
-            var pageParams = new PageParameters{ PageNumber = 2, PageSize = 1 };
+            var pageParams = new PageParameters { PageNumber = 2, PageSize = 1 };
             urlHelper.Setup(
                 u => u.Link(
                     It.IsAny<string>(),
@@ -186,7 +185,7 @@ namespace Climbing.Web.Tests.Unit.Api
                     It.IsAny<string>(),
                     It.Is<PageParameters>(p => p.PageNumber == pageParams.PageNumber + 1 && p.PageSize == pageParams.PageSize)))
                     .Returns("NEXT");
-            var pagedCollection = new PagedCollection<TeamFacade>(new [] { value }, pageParams.PageNumber, 3, pageParams.PageSize);
+            var pagedCollection = new PagedCollection<TeamFacade>(new[] { value }, pageParams.PageNumber, 3, pageParams.PageSize);
             teamsService.Setup(s => s.GetTeams(code, pageParams, It.IsAny<CancellationToken>())).ReturnsAsync(pagedCollection);
             var sut = new TeamsController(teamsService.Object, urlHelper.Object);
 

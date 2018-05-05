@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoFixture;
-using AutoFixture.AutoMoq;
-using AutoFixture.Xunit2;
-using Climbing.Web.Common.Service;
-using Climbing.Web.Common.Service.Facade;
-using Climbing.Web.Common.Service.Repository;
-using Climbing.Web.Database;
-using Climbing.Web.Model.Facade;
-using Climbing.Web.Tests.Unit.Utilities;
-using Climbing.Web.Utilities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
-using Moq;
-
-namespace Climbing.Web.Tests.Unit
+﻿namespace Climbing.Web.Tests.Unit
 {
+    using System;
+    using System.Collections.Generic;
+    using AutoFixture;
+    using AutoFixture.AutoMoq;
+    using AutoFixture.Xunit2;
+    using Climbing.Web.Common.Service;
+    using Climbing.Web.Common.Service.Facade;
+    using Climbing.Web.Common.Service.Repository;
+    using Climbing.Web.Database;
+    using Climbing.Web.Model.Facade;
+    using Climbing.Web.Tests.Unit.Utilities;
+    using Climbing.Web.Utilities;
+    using Microsoft.EntityFrameworkCore;
+
     internal sealed class AutoMoqDataAttribute : AutoDataAttribute
     {
         private static readonly string DatabaseName = $"Database_{Guid.NewGuid()}";
 
         private static readonly Random Rnd = new Random();
 
-        public AutoMoqDataAttribute() : base(CreateFixture)
+        public AutoMoqDataAttribute()
+            : base(CreateFixture)
         {
         }
 
@@ -39,7 +36,7 @@ namespace Climbing.Web.Tests.Unit
                 new ContextSeedingHelper(ctx).Seed();
                 return ctx;
             });
-            
+
             fixture.Register<IUnitOfWork>(() => fixture.Create<ClimbingContext>());
             fixture.Register<IContextHelper>(() => new SimpleContextHelper());
             fixture.Register<ISeedingHelper>(() => new SimpleSeedingHelper());
@@ -52,11 +49,12 @@ namespace Climbing.Web.Tests.Unit
 
         private static Fixture RegisterPagedCollection<T>(Fixture fixture)
         {
-            fixture.Register<PagedCollection<T>>(() => {
+            fixture.Register<PagedCollection<T>>(() =>
+            {
                 var collection = fixture.Create<ICollection<T>>();
                 var pageSize = Rnd.Next(1, collection.Count + 1);
                 var totalPages = collection.Count / pageSize;
-                if(collection.Count % pageSize > 0)
+                if (collection.Count % pageSize > 0)
                 {
                     totalPages++;
                 }

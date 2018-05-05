@@ -1,8 +1,8 @@
-using Climbing.Web.Model;
-using Climbing.Web.Utilities;
-
 namespace Climbing.Web.Tests.Unit.Utilities
 {
+    using Climbing.Web.Model;
+    using Climbing.Web.Utilities;
+
     public class TestIdentityObject : BaseEntity
     {
         public TestIdentityObject()

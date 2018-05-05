@@ -1,9 +1,9 @@
-﻿using System;
-using Climbing.Web.Utilities;
-using Xunit;
-
-namespace Climbing.Web.Tests.Unit
+﻿namespace Climbing.Web.Tests.Unit
 {
+    using System;
+    using Climbing.Web.Utilities;
+    using Xunit;
+
     public class MethodHelperTests
     {
         [Theory]
@@ -13,7 +13,7 @@ namespace Climbing.Web.Tests.Unit
             // Arrange
             var sut = new
             {
-                TestPropertyString = propertyValueStr
+                TestPropertyString = propertyValueStr,
             };
 
             // Act
@@ -30,7 +30,7 @@ namespace Climbing.Web.Tests.Unit
             // Arrange
             var sut = new
             {
-                TestProperty = propertyValue
+                TestProperty = propertyValue,
             };
 
             // Act
@@ -70,6 +70,6 @@ namespace Climbing.Web.Tests.Unit
             {
                 this.field = field;
             }
-        } 
+        }
     }
 }

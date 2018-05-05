@@ -1,15 +1,14 @@
-using System;
-using System.Linq.Expressions;
-using Climbing.Web.Utilities;
-using Xunit;
-
 namespace Climbing.Web.Tests.Unit
 {
+    using System;
+    using Climbing.Web.Utilities;
+    using Xunit;
+
     public class ObjectSerializerTests
     {
         [Theory]
-        [AutoMoqInlineData(nameof(TestClassToSerialize.publicField), MemberType.Field)]
-        [AutoMoqInlineData(nameof(TestClassToSerialize.internalField), MemberType.Field)]
+        [AutoMoqInlineData(nameof(TestClassToSerialize.PublicField), MemberType.Field)]
+        [AutoMoqInlineData(nameof(TestClassToSerialize.InternalField), MemberType.Field)]
         [AutoMoqInlineData("ProtectedProperty", MemberType.Property)]
         [AutoMoqInlineData("PrivateProperty", MemberType.Property)]
         public void ShouldSerializeStringProperties(string propertyName, MemberType memberType, TestClassToSerialize sut)
@@ -70,7 +69,7 @@ namespace Climbing.Web.Tests.Unit
         }
 
         [Theory]
-        [AutoMoqInlineData(nameof(TestClassToSerialize.skipField))]
+        [AutoMoqInlineData(nameof(TestClassToSerialize.SkipField))]
         [AutoMoqInlineData(nameof(TestClassToSerialize.SkipProperty))]
         public void ShouldNotSerializeSkippedMembers(string memberName, TestClassToSerialize sut)
         {
@@ -84,19 +83,27 @@ namespace Climbing.Web.Tests.Unit
         public class TestClassToSerialize
         {
             [SerializeSkip]
-            public int skipField;
+#pragma warning disable SA1401 // Fields should be private
+            public int SkipField;
 
-            public string publicField;
-            internal string internalField = $"internalField{Guid.NewGuid()}";
+            public string PublicField;
+
+            internal string InternalField = $"internalField{Guid.NewGuid()}";
+
             protected int protectedField = Guid.NewGuid().ToByteArray()[0];
+#pragma warning restore SA1401 // Fields should be private
+
             private int privateField = Guid.NewGuid().ToByteArray()[1];
-            
+
             [SerializeSkip]
             public string SkipProperty { get; set; }
 
             public int PublicProperty { get; set; }
+
             internal int InternalProperty { get; set; } = Guid.NewGuid().ToByteArray()[2];
+
             protected string ProtectedProperty { get; set; } = $"ProtectedProperty{Guid.NewGuid()}";
+
             private string PrivateProperty { get; set; } = $"PrivateProperty{Guid.NewGuid()}";
         }
     }

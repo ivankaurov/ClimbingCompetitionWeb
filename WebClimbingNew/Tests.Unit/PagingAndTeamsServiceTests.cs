@@ -1,17 +1,15 @@
-using System.Linq;
-using System.Threading.Tasks;
-using Climbing.Web.Common.Service;
-using Climbing.Web.Common.Service.Exceptions;
-using Climbing.Web.Common.Service.Facade;
-using Climbing.Web.Common.Service.Repository;
-using Climbing.Web.Model;
-using Climbing.Web.Utilities;
-using Microsoft.Extensions.Logging;
-using Moq;
-using Xunit;
-
 namespace Climbing.Web.Tests.Unit
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Climbing.Web.Common.Service.Exceptions;
+    using Climbing.Web.Common.Service.Facade;
+    using Climbing.Web.Common.Service.Repository;
+    using Climbing.Web.Model;
+    using Microsoft.Extensions.Logging;
+    using Moq;
+    using Xunit;
+
     public class PagingAndTeamsServiceTests
     {
         private readonly Mock<ILogger<TeamsService>> loggerMock = new Mock<ILogger<TeamsService>>();
@@ -52,14 +50,14 @@ namespace Climbing.Web.Tests.Unit
         {
             // Arrange
             var sut = new TeamsService(uow, this.Logger);
-            var pageParameters = new PageParameters{ PageNumber = 2, PageSize = 3 };
+            var pageParameters = new PageParameters { PageNumber = 2, PageSize = 3 };
             var expected = Enumerable.Range(4, 3);
 
             // Act
             var actual = await sut.GetTeams(Team.RootTeamCode, pageParameters);
 
             // Assert
-            var zip = actual.Zip(expected, (a,e) => new { Actual = a, Expcted = e});
+            var zip = actual.Zip(expected, (a, e) => new { Actual = a, Expcted = e });
             Assert.All(zip, z => Assert.Equal(z.Expcted.ToString("00"), z.Actual.Code));
             Assert.All(zip, z => Assert.Equal($"Team_{z.Expcted:00}", z.Actual.Name));
             Assert.Equal(pageParameters.PageNumber, actual.PageNumber);
@@ -73,7 +71,7 @@ namespace Climbing.Web.Tests.Unit
         {
             // Arrange
             var sut = new TeamsService(uow, this.Logger);
-            var pageParameters = new PageParameters{ PageNumber = 4, PageSize = 3 };
+            var pageParameters = new PageParameters { PageNumber = 4, PageSize = 3 };
 
             // Act
             var actual = await sut.GetTeams(pageParameters);
@@ -91,7 +89,7 @@ namespace Climbing.Web.Tests.Unit
         {
             // Arrange
             var sut = new TeamsService(uow, this.Logger);
-            var pageParameters = new PageParameters{ PageNumber = 40, PageSize = 11 };
+            var pageParameters = new PageParameters { PageNumber = 40, PageSize = 11 };
 
             // Act
             var actual = await sut.GetTeams(pageParameters);

@@ -1,10 +1,10 @@
-using System;
-using Climbing.Web.Model.Logging;
-using Climbing.Web.Tests.Unit.Utilities;
-using Xunit;
-
 namespace Climbing.Web.Tests.Unit
 {
+    using System;
+    using Climbing.Web.Model.Logging;
+    using Climbing.Web.Tests.Unit.Utilities;
+    using Xunit;
+
     public class LtrTests
     {
         [Theory]

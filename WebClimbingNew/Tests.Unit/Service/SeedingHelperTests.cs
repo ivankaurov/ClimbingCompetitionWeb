@@ -1,16 +1,16 @@
-using System;
-using System.Threading.Tasks;
-using Climbing.Web.Common.Service.Facade;
-using Climbing.Web.Common.Service.Repository;
-using Climbing.Web.Database;
-using Climbing.Web.Model;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Moq;
-using Xunit;
-
 namespace Climbing.Web.Tests.Unit.Service
 {
+    using System;
+    using System.Threading.Tasks;
+    using Climbing.Web.Common.Service.Facade;
+    using Climbing.Web.Common.Service.Repository;
+    using Climbing.Web.Database;
+    using Climbing.Web.Model;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+    using Moq;
+    using Xunit;
+
     public class SeedingHelperTests : IDisposable
     {
         private readonly Mock<ILogger<TeamsService>> teamsServiceLoggerMock = new Mock<ILogger<TeamsService>>();
@@ -56,17 +56,22 @@ namespace Climbing.Web.Tests.Unit.Service
             Assert.Equal(Team.RootTeamName, rootTeam.Name);
 
             var rootEntity = await this.context.Repository<Team>().SingleAsync(t => t.Id == rootTeam.Id);
-            foreach(var t in SeedingHelper.SrcTeams)
+            foreach (var t in SeedingHelper.SrcTeams)
             {
                 await this.AssertTeamWithChildren(t, rootEntity);
             }
+        }
+
+        public void Dispose()
+        {
+            this.context.Dispose();
         }
 
         private async Task AssertTeamWithChildren(Team expected, Team parent)
         {
             var actual = await this.context.Repository<Team>().SingleAsync(t => t.Name == expected.Name && t.ParentId == parent.Id);
             Assert.Equal(expected.Name, actual.Name);
-            if(expected.Code != null)
+            if (expected.Code != null)
             {
                 Assert.Equal(expected.Code, actual.Code);
             }
@@ -75,15 +80,10 @@ namespace Climbing.Web.Tests.Unit.Service
                 Assert.NotEmpty(actual.Code);
             }
 
-            foreach(var child in expected.Children)
+            foreach (var child in expected.Children)
             {
                 await this.AssertTeamWithChildren(child, actual);
             }
-        }
-
-        public void Dispose()
-        {
-            this.context.Dispose();
         }
     }
 }

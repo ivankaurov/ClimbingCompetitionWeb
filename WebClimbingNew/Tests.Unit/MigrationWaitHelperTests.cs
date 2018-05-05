@@ -1,15 +1,14 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoFixture.Xunit2;
-using Climbing.Web.Common.Service;
-using Climbing.Web.Common.Service.Repository;
-using Microsoft.Extensions.Logging;
-using Moq;
-using Xunit;
-
 namespace Climbing.Web.Tests.Unit
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Climbing.Web.Common.Service;
+    using Climbing.Web.Common.Service.Repository;
+    using Microsoft.Extensions.Logging;
+    using Moq;
+    using Xunit;
+
     public class MigrationWaitHelperTests
     {
         private static readonly TimeSpan DefaultWaitTimeSpan = TimeSpan.FromSeconds(10);
@@ -63,7 +62,7 @@ namespace Climbing.Web.Tests.Unit
 
             // Act & Assert
             await Assert.ThrowsAsync<TimeoutException>(
-                () =>sut.WaitForMigrationsToComplete(TimeSpan.FromSeconds(5), DefaultPollTimeSpan, CancellationToken.None));
+                () => sut.WaitForMigrationsToComplete(TimeSpan.FromSeconds(5), DefaultPollTimeSpan, CancellationToken.None));
             contextHelper.Verify(c => c.IsMigrated(It.IsAny<CancellationToken>()), Times.AtLeast(2));
         }
 
@@ -74,7 +73,7 @@ namespace Climbing.Web.Tests.Unit
             // Assert
             contextHelper.Setup(c => c.IsMigrated(It.IsAny<CancellationToken>())).ReturnsAsync(false);
             var sut = new MigrationWaitHelper(contextHelper.Object, seedingHelper, this.Logger);
-            using(var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5)))
+            using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5)))
             {
                 // Act & Assert
                 await Assert.ThrowsAnyAsync<OperationCanceledException>(

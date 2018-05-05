@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Climbing.Web.Utilities;
-using Xunit;
-
-namespace Climbing.Web.Tests.Unit
+﻿namespace Climbing.Web.Tests.Unit
 {
+    using System;
+    using Climbing.Web.Utilities;
+    using Xunit;
+
     public class GuardTests
     {
         [Theory]
@@ -63,7 +61,7 @@ namespace Climbing.Web.Tests.Unit
             var parameterName = Guid.NewGuid().ToString();
 
             // Act
-            var actual = Assert.Throws<ArgumentNullException>(()=>Guard.NotNullOrWhitespace(value, parameterName));
+            var actual = Assert.Throws<ArgumentNullException>(() => Guard.NotNullOrWhitespace(value, parameterName));
 
             // Assert
             Assert.Equal(parameterName, actual.ParamName);
