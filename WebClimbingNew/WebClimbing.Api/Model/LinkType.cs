@@ -7,6 +7,6 @@ namespace Climbing.Web.Api.Model
         Delete,
         Update,
         NextPage,
-        PreviousPage
+        PreviousPage,
     }
 }

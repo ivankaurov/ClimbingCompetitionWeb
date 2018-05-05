@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-
 namespace Climbing.Web.Api.Model
 {
+    using System.Collections.Generic;
+
     public abstract class LinkedResultBase
     {
         public IDictionary<LinkType, Link> Links { get; } = new Dictionary<LinkType, Link>();

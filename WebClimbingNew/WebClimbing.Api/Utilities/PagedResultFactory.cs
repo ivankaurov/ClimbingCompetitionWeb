@@ -1,10 +1,10 @@
-using Climbing.Web.Api.Model;
-using Climbing.Web.Common.Service.Facade;
-using Climbing.Web.Utilities;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Climbing.Web.Api.Utilites
 {
+    using Climbing.Web.Api.Model;
+    using Climbing.Web.Common.Service.Facade;
+    using Climbing.Web.Utilities;
+    using Microsoft.AspNetCore.Mvc;
+
     internal static class PagedResultFactory
     {
         public static PagedResult<TResult> ToPagedResult<TResult>(this IPagedCollection<TResult> pagedCollection, IUrlHelper urlHelper, string getRouteName)
@@ -14,7 +14,7 @@ namespace Climbing.Web.Api.Utilites
             Guard.NotNullOrWhitespace(getRouteName, nameof(getRouteName));
 
             var result = new PagedResult<TResult>(pagedCollection.Page);
-            if(pagedCollection.PageNumber > 1)
+            if (pagedCollection.PageNumber > 1)
             {
                 result.AddLink(
                     LinkType.PreviousPage,
@@ -22,7 +22,7 @@ namespace Climbing.Web.Api.Utilites
                     "GET");
             }
 
-            if(pagedCollection.PageNumber < pagedCollection.TotalPages)
+            if (pagedCollection.PageNumber < pagedCollection.TotalPages)
             {
                 result.AddLink(
                     LinkType.NextPage,

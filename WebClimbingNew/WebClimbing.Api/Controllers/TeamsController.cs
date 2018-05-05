@@ -1,13 +1,12 @@
-using System.Threading.Tasks;
-using Climbing.Web.Api.Model;
-using Climbing.Web.Api.Utilites;
-using Climbing.Web.Common.Service.Exceptions;
-using Climbing.Web.Common.Service.Facade;
-using Climbing.Web.Utilities;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Climbing.Web.Api.Controllers
 {
+    using System.Threading.Tasks;
+    using Climbing.Web.Api.Utilites;
+    using Climbing.Web.Common.Service.Exceptions;
+    using Climbing.Web.Common.Service.Facade;
+    using Climbing.Web.Utilities;
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/teams")]
     public class TeamsController : Controller
     {
@@ -41,7 +40,7 @@ namespace Climbing.Web.Api.Controllers
                 var response = await this.teamsService.GetTeams(parent, pageParameters);
                 return this.Ok(response.ToPagedResult(this.urlHelper, GetChildTeamsRouteName));
             }
-            catch(ObjectNotFoundException)
+            catch (ObjectNotFoundException)
             {
                 return this.NotFound();
             }
@@ -51,11 +50,11 @@ namespace Climbing.Web.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var team = await this.teamsService.GetRootTeam();
-            if(team == null)
+            if (team == null)
             {
                 return this.NotFound();
             }
-            
+
             return this.Ok(team);
         }
 
@@ -63,11 +62,11 @@ namespace Climbing.Web.Api.Controllers
         public async Task<IActionResult> Get(string code)
         {
             var team = await this.teamsService.GetTeam(code);
-            if(team == null)
+            if (team == null)
             {
                 return this.NotFound();
             }
-            
+
             return this.Ok(team);
         }
     }

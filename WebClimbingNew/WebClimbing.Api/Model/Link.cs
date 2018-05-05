@@ -7,7 +7,9 @@ namespace Climbing.Web.Api.Model
             this.Href = href;
             this.Method = method;
         }
+
         public string Href { get; }
+
         public string Method { get; }
     }
 }

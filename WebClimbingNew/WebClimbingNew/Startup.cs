@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Climbing.Web.Database.Postgres;
-using Climbing.Web.Common.Service;
-using Climbing.Web.Database;
-
-namespace Climbing.Web.Portal
+﻿namespace Climbing.Web.Portal
 {
+    using Climbing.Web.Common.Service;
+    using Climbing.Web.Database;
+    using Climbing.Web.Database.Postgres;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
             this.AppSettings = this.Configuration.GetSection("Settings").Get<AppSettings>();
         }
 
         public IConfiguration Configuration { get; }
+
         public AppSettings AppSettings { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.

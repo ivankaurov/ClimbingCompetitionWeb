@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Climbing.Web.Database;
-using Climbing.Web.Common.Service;
-using System.Threading;
-
-namespace Climbing.Web.Api
+﻿namespace Climbing.Web.Api
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Climbing.Web.Common.Service;
+    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -33,10 +26,10 @@ namespace Climbing.Web.Api
 
         private static async Task WaitForMigrations(IServiceProvider serviceProvider)
         {
-            using(var scope = serviceProvider.CreateScope())
+            using (var scope = serviceProvider.CreateScope())
             {
                 var settings = scope.ServiceProvider.GetRequiredService<AppSettings>();
-                if(settings.MigrateByApi)
+                if (settings.MigrateByApi)
                 {
                     var migrator = scope.ServiceProvider.GetRequiredService<IContextHelper>();
                     await migrator.Migrate(CancellationToken.None);
@@ -44,7 +37,7 @@ namespace Climbing.Web.Api
                 else
                 {
                     var helper = scope.ServiceProvider.GetRequiredService<IMigrationWaitHelper>();
-                    await helper.WaitForMigrationsToComplete(settings.MigrationWaitTimeout,settings.MigrationPollInterval, CancellationToken.None);
+                    await helper.WaitForMigrationsToComplete(settings.MigrationWaitTimeout, settings.MigrationPollInterval, CancellationToken.None);
                 }
             }
         }
