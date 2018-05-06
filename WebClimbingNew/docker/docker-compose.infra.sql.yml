@@ -1,0 +1,19 @@
+version: "3.4"
+services:
+  mssql-express:
+    image: microsoft/mssql-server-linux:2017-CU6
+    container_name: mssql-express
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=P@ssw0rd
+      - MSSQL_PID=Express
+    restart: unless-stopped
+    networks:
+      db:
+        aliases:
+          - mssql-express
+  
+networks:
+  db:

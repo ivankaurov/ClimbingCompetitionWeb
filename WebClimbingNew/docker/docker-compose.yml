@@ -60,5 +60,5 @@ services:
 networks:
   sql:
     external:
-      name: infra_my-sql
+      name: infra_db
   idp-net:

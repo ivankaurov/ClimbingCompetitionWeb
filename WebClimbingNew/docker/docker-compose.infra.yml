@@ -1,15 +1,30 @@
 version: "3.4"
 services:
+
   postgres-sql:
     image: postgres:latest
     container_name: postgres
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=P@ssw0rd
     restart: unless-stopped
     networks:
-      my-sql:
+      db:
         aliases:
           - postgres-sql
+          - postgres
+
+  pgadmin:
+    image: fenglc/pgadmin4:latest
+    container_name: pgadmin
+    ports:
+      - "5050:5050"
+    environment:
+      - DEFAULT_USER=admin
+      - DEFAULT_PASSWORD=Qqq111!!!
+    networks:
+      db:
   
 networks:
-  my-sql:
+  db:
