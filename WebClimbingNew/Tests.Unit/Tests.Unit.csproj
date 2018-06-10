@@ -1,18 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <AssemblyName>Climbing.Web.Tests.Unit</AssemblyName>
     <DefaultNamespace>Climbing.Web.Tests.Unit</DefaultNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoFixture" Version="4.3.0" />
-    <PackageReference Include="AutoFixture.AutoMoq" Version="4.3.0" />
-    <PackageReference Include="AutoFixture.Xunit2" Version="4.3.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-    <PackageReference Include="Moq" Version="4.8.2" />
+    <PackageReference Include="AutoFixture" Version="4.4.0" />
+    <PackageReference Include="AutoFixture.AutoMoq" Version="4.4.0" />
+    <PackageReference Include="AutoFixture.Xunit2" Version="4.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
+    <PackageReference Include="Moq" Version="4.8.3" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
